@@ -21,6 +21,18 @@
 
 static bool isPrime(const unsigned int n)
 {
+  if(n==2 || n== 3)
+    {
+      return true;
+    }
+
+  // short cuts to reduce search space
+  if((n-1)%6 != 0 &&
+     (n+1)%6 != 0)
+    {
+      return false;
+    }
+
   for(unsigned int i=3; i<=ceil(sqrt(n)); i+=2)
     {
       if(n%i == 0)
