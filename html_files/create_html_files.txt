@@ -1,0 +1,3 @@
+for x in `ls *.m`; do code2html -l matlab $x $x.html; done
+
+for x in `ls *.html`; do y=$(echo $x | cut -d'.' -f 1 | cut -c5-) ; z=$(echo $x | sed 's/\(.*\)...../\1/'); echo $y; echo $z; find . -name $x -print0 | xargs -0 perl -pi -e "s/<pre>/<a href=http:\/\/projecteuler\.net\/index\.php\?section=problems&id=$y>Problem $y<\/a><br>Filename: $z<br><pre>/g"; done
