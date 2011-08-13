@@ -1,0 +1,103 @@
+<html>
+<head>
+  <title>prob32.pl</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=32>Problem 32</a><br>Filename: prob32.pl<br><pre>
+<font color="#444444">#!/usr/bin/perl -w
+
+# Problem 32
+
+# We shall say that an n-digit number is pandigital if it makes use of all the digits 1 to n exactly once; for example, the 5-digit number, 15234, is 1 through 5 pandigital.
+# 
+# The product 7254 is unusual, as the identity, 39  186 = 7254, containing multiplicand, multiplier, and product is 1 through 9 pandigital.
+# 
+# Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital.
+# 
+# HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.
+
+</font><strong>use</strong> strict;
+<strong>require</strong> List::Permutor;
+
+<strong>my</strong> <font color="#2040a0">@results</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+
+<strong>my</strong> <font color="#2040a0">$permutator</font> = List::Permutor-&gt;<strong>new</strong><font color="4444FF"><strong>(</strong></font>1,2,3,4,5,6,7,8,9<font color="4444FF"><strong>)</strong></font>;
+<strong>while</strong><font color="4444FF"><strong>(</strong></font> <strong>my</strong> <font color="#2040a0">@permutation</font> = <font color="#2040a0">$permutator</font>-&gt;<strong>next</strong><font color="4444FF"><strong>)</strong></font>
+<font color="4444FF"><strong>{</strong></font>
+    <strong>for</strong><font color="4444FF"><strong>(</strong></font><strong>my</strong> <font color="#2040a0">$prod_idx</font>=1; <font color="#2040a0">$prod_idx</font> &lt;= <font color="#2040a0">$#</font>permutation-1; <font color="#2040a0">$prod_idx</font>=<font color="#2040a0">$prod_idx</font>+1<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>my</strong> <font color="#2040a0">@working_permutation</font> = <font color="#2040a0">@permutation</font>;
+	<font color="a52a2a"><strong>splice</strong></font> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@working_permutation</font>, <font color="#2040a0">$prod_idx</font>, 0, <font color="#008000">&quot;*&quot;</font><font color="4444FF"><strong>)</strong></font>;
+	<strong>for</strong><font color="4444FF"><strong>(</strong></font><strong>my</strong> <font color="#2040a0">$eq_idx</font> = <font color="#2040a0">$prod_idx</font>+2; <font color="#2040a0">$eq_idx</font> &lt;= <font color="#2040a0">$#</font>working_permutation; <font color="#2040a0">$eq_idx</font>=<font color="#2040a0">$eq_idx</font>+1<font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>my</strong> <font color="#2040a0">@working_permutation2</font> = <font color="#2040a0">@working_permutation</font>;
+	    <font color="a52a2a"><strong>splice</strong></font> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@working_permutation2</font>, <font color="#2040a0">$eq_idx</font>, 0, <font color="#008000">&quot;==&quot;</font><font color="4444FF"><strong>)</strong></font>;
+	    <strong>my</strong> <font color="#2040a0">$string</font> = <font color="a52a2a"><strong>join</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">&quot;&quot;</font>, <font color="#2040a0">@working_permutation2</font><font color="4444FF"><strong>)</strong></font>;
+	    <strong>my</strong> <font color="#2040a0">$result</font> = <strong>eval</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$string</font><font color="4444FF"><strong>)</strong></font>;
+	    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$result</font> == 1<font color="4444FF"><strong>)</strong></font>
+	    <font color="4444FF"><strong>{</strong></font>
+		<strong>my</strong> <font color="#2040a0">@product</font> = <font color="a52a2a"><strong>split</strong></font> <font color="4444FF"><strong>(</strong></font><font color="b000d0">/==/</font>, <font color="#2040a0">$string</font><font color="4444FF"><strong>)</strong></font>;
+		<font color="a52a2a"><strong>print</strong></font> <font color="#008000">&quot;<font color="#2040a0">$string</font> :: &quot;</font>;
+		<font color="a52a2a"><strong>print</strong></font> <font color="#008000">&quot;<font color="#2040a0">$product</font>[1]<font color="#77dd77">\n</font>&quot;</font>;
+		<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@results</font>, <font color="#2040a0">$product</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>;
+	    <font color="4444FF"><strong>}</strong></font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">##12*483==5796 :: 5796
+##138*42==5796 :: 5796
+##157*28==4396 :: 4396
+##159*48==7632 :: 7632
+##1738*4==6952 :: 6952
+##18*297==5346 :: 5346
+##186*39==7254 :: 7254
+##1963*4==7852 :: 7852
+##198*27==5346 :: 5346
+##27*198==5346 :: 5346
+##28*157==4396 :: 4396
+##297*18==5346 :: 5346
+##39*186==7254 :: 7254
+##4*1738==6952 :: 6952
+##4*1963==7852 :: 7852
+##42*138==5796 :: 5796
+##48*159==7632 :: 7632
+##483*12==5796 :: 5796
+
+#my @results = (5796,
+#	       5796,
+#	       4396,
+#	       7632,
+#	       6952,
+#	       5346,
+#	       7254,
+#	       7852,
+#	       5346,
+#	       5346,
+#	       4396,
+#	       5346,
+#	       7254,
+#	       6952,
+#	       7852,
+#	       5796,
+#	       7632,
+#	       5796);
+
+</font><strong>my</strong> <font color="#2040a0">%saw</font>;
+<font color="#2040a0">@saw</font><font color="4444FF"><strong>{</strong></font><font color="#2040a0">@results</font><font color="4444FF"><strong>}</strong></font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+<strong>my</strong> <font color="#2040a0">@uniq</font> = <font color="a52a2a"><strong>keys</strong></font> <font color="#2040a0">%saw</font>;
+
+<strong>my</strong> <font color="#2040a0">$answer</font> = 0;
+
+<strong>foreach</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@uniq</font><font color="4444FF"><strong>)</strong></font>
+<font color="4444FF"><strong>{</strong></font>
+    <font color="#2040a0">$answer</font> = <font color="#2040a0">$answer</font> + <font color="#2040a0">$_</font>;
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="a52a2a"><strong>print</strong></font> <font color="#008000">&quot;<font color="#2040a0">$answer</font><font color="#77dd77">\n</font>&quot;</font>;
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

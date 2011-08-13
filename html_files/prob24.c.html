@@ -1,0 +1,71 @@
+<html>
+<head>
+  <title>prob24.c</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=24>Problem 24</a><br>Filename: prob24.c<br><pre>
+<font color="#444444">/*A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:
+ *
+ *012   021   102   120   201   210
+ *
+ *What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?
+ */</font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+
+<font color="0000ff"><strong>#define MAX_VAL 10</strong></font>
+
+<strong>void</strong> <font color="#2040a0">printVector</font><font color="4444FF">(</font><strong>const</strong> <strong>int</strong> <font color="4444FF">*</font><font color="#2040a0">v</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font> <font color="#2040a0">MAX_VAL</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%d&quot;</font>, <font color="#2040a0">v</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="4444FF"><strong>{</strong></font><font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">4</font>, <font color="#FF0000">5</font>, <font color="#FF0000">6</font>, <font color="#FF0000">7</font>, <font color="#FF0000">8</font>, <font color="#FF0000">9</font><font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">i</font>, <font color="#2040a0">j</font>, <font color="#2040a0">k</font>, <font color="#2040a0">l</font>, <font color="#2040a0">temp</font><font color="4444FF">;</font>
+  
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#FF0000">1000000</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font><font color="#2040a0">MAX_VAL</font><font color="4444FF">-</font><font color="#FF0000">2</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&gt;</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  
+	  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font> <font color="4444FF">&lt;</font> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">l</font><font color="4444FF">=</font><font color="#2040a0">MAX_VAL</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">l</font><font color="4444FF">&gt;</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">l</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+		  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font> <font color="4444FF">&lt;</font> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">l</font><font color="4444FF">]</font><font color="4444FF">)</font>
+		    <font color="4444FF"><strong>{</strong></font>
+		      <font color="#2040a0">temp</font> <font color="4444FF">=</font> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		      <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">l</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		      <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">l</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">temp</font><font color="4444FF">;</font>
+		      <strong>break</strong><font color="4444FF">;</font>
+		    <font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>							
+	      
+	      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">k</font><font color="4444FF">=</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">k</font><font color="4444FF">&lt;</font><font color="#2040a0">MAX_VAL</font><font color="4444FF">-</font><font color="4444FF">(</font><font color="4444FF">(</font><font color="#2040a0">MAX_VAL</font><font color="4444FF">-</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">)</font>/<font color="#FF0000">2</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">k</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+		  <font color="#2040a0">temp</font> <font color="4444FF">=</font> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		  <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">MAX_VAL</font><font color="4444FF">-</font><font color="4444FF">(</font><font color="#2040a0">k</font><font color="4444FF">-</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		  <font color="#2040a0">w</font><font color="4444FF">[</font><font color="#2040a0">MAX_VAL</font><font color="4444FF">-</font><font color="4444FF">(</font><font color="#2040a0">k</font><font color="4444FF">-</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">temp</font><font color="4444FF">;</font>
+		<font color="4444FF"><strong>}</strong></font>
+	      <strong>break</strong><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	<font color="4444FF"><strong>}</strong></font>
+      
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="#2040a0">printVector</font><font color="4444FF">(</font><font color="#2040a0">w</font><font color="4444FF">)</font><font color="4444FF">;</font>					
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

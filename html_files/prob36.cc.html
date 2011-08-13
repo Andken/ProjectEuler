@@ -1,0 +1,136 @@
+<html>
+<head>
+  <title>prob36.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=36>Problem 36</a><br>Filename: prob36.cc<br><pre>
+<font color="#444444">// The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.</font>
+<font color="#444444">// </font>
+<font color="#444444">// Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2.</font>
+<font color="#444444">// </font>
+<font color="#444444">// (Please note that the palindromic number, in either base, may not include leading zeros.)</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;iostream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;string&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;sstream&gt;</font></strong></font>
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+<strong>inline</strong> <font color="#2040a0">string</font> <font color="#2040a0">reverse</font><font color="4444FF">(</font><strong>const</strong> <font color="#2040a0">string</font> <font color="4444FF">&amp;</font><font color="#2040a0">src</font><font color="4444FF">)</font> 
+<font color="4444FF"><strong>{</strong></font> 
+  <strong>return</strong> <font color="#2040a0">string</font><font color="4444FF">(</font><font color="#2040a0">src</font>.<font color="#2040a0">rbegin</font><font color="4444FF">(</font><font color="4444FF">)</font>, <font color="#2040a0">src</font>.<font color="#2040a0">rend</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font> 
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <strong>bool</strong> <font color="#2040a0">isPalindrome</font><font color="4444FF">(</font><strong>const</strong> <font color="#2040a0">string</font> <font color="4444FF">&amp;</font><font color="#2040a0">s</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>return</strong> <font color="#2040a0">s</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">reverse</font><font color="4444FF">(</font><font color="#2040a0">s</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <strong>bool</strong> <font color="#2040a0">isDecimalPalindrome</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">ostringstream</font> <font color="#2040a0">strstrm</font><font color="4444FF">;</font>
+  <font color="#2040a0">strstrm</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">x</font><font color="4444FF">;</font>
+  <strong>return</strong> <font color="#2040a0">isPalindrome</font><font color="4444FF">(</font><font color="#2040a0">strstrm</font>.<font color="#2040a0">str</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <font color="#2040a0">string</font> <font color="#2040a0">binaryDigit</font><font color="4444FF">(</font><strong>const</strong> <strong>char</strong> <font color="#2040a0">c</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>switch</strong><font color="4444FF">(</font><font color="#2040a0">c</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+    <strong>case</strong> <font color="#008000">'0'</font><font color="4444FF">:</font>
+      <strong>return</strong> <font color="#008000">&quot;0000&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'1'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0001&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'2'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0010&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'3'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0011&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'4'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0100&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'5'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0101&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'6'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0110&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'7'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;0111&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'8'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1000&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'9'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1001&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'A'</font><font color="4444FF">:</font>
+    <strong>case</strong> <font color="#008000">'a'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1010&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'B'</font><font color="4444FF">:</font>
+    <strong>case</strong> <font color="#008000">'b'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1011&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'C'</font><font color="4444FF">:</font>
+    <strong>case</strong> <font color="#008000">'c'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1100&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'D'</font><font color="4444FF">:</font>
+    <strong>case</strong> <font color="#008000">'d'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1101&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'E'</font><font color="4444FF">:</font>
+    <strong>case</strong> <font color="#008000">'e'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1110&quot;</font><font color="4444FF">;</font>
+    <strong>case</strong> <font color="#008000">'F'</font><font color="4444FF">:</font>
+    <strong>case</strong> <font color="#008000">'f'</font><font color="4444FF">:</font>
+      <strong>return</strong>	<font color="#008000">&quot;1111&quot;</font><font color="4444FF">;</font>
+    <strong>default</strong><font color="4444FF">:</font>
+      <font color="#2040a0">cerr</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;WRONG: &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">c</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+      <strong>return</strong> <font color="#008000">&quot;&quot;</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>inline</strong> <font color="#2040a0">string</font> <font color="#2040a0">binaryString</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">ostringstream</font> <font color="#2040a0">hex_strstrm</font><font color="4444FF">;</font>
+  <font color="#2040a0">hex_strstrm</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">hex</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">x</font><font color="4444FF">;</font>
+  
+  <font color="#2040a0">string</font> <font color="#2040a0">output</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">hex_strstrm</font>.<font color="#2040a0">str</font><font color="4444FF">(</font><font color="4444FF">)</font>.<font color="#2040a0">length</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>char</strong> <font color="#2040a0">working</font> <font color="4444FF">=</font> <font color="#2040a0">hex_strstrm</font>.<font color="#2040a0">str</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="#2040a0">output</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">binaryDigit</font><font color="4444FF">(</font><font color="#2040a0">working</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#444444">// trim leading zeros</font>
+  <strong>while</strong><font color="4444FF">(</font><font color="#2040a0">output</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#008000">'0'</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">output</font> <font color="4444FF">=</font> <font color="#2040a0">output</font>.<font color="#2040a0">erase</font><font color="4444FF">(</font><font color="#FF0000">0</font>,<font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <strong>return</strong> <font color="#2040a0">output</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <strong>bool</strong> <font color="#2040a0">isBinaryPalindrome</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>return</strong> <font color="#2040a0">isPalindrome</font><font color="4444FF">(</font><font color="#2040a0">binaryString</font><font color="4444FF">(</font><font color="#2040a0">x</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#444444">//	cout &lt;&lt; isDecimalPalindrome(585) &lt;&lt; endl;</font>
+  <font color="#444444">//	cout &lt;&lt; isBinaryPalindrome(585) &lt;&lt; endl;</font>
+  <font color="#444444">//	cout &lt;&lt; binaryString(585) &lt;&lt; endl;</font>
+  <font color="#444444">//	return 0;</font>
+  
+  <strong>int</strong> <font color="#2040a0">running_total</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#FF0000">1000000</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isDecimalPalindrome</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font>
+	 <font color="#2040a0">isBinaryPalindrome</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">running_total</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">i</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;answer: &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">running_total</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

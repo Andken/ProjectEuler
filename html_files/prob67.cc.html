@@ -1,0 +1,111 @@
+<html>
+<head>
+  <title>prob67.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=67>Problem 67</a><br>Filename: prob67.cc<br><pre>
+<font color="#444444">// Prob 67</font>
+<font color="#444444">// By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</font>
+<font color="#444444">// </font>
+<font color="#444444">// 3</font>
+<font color="#444444">// 7 4</font>
+<font color="#444444">// 2 4 6</font>
+<font color="#444444">// 8 5 9 3</font>
+<font color="#444444">// </font>
+<font color="#444444">// That is, 3 + 7 + 4 + 9 = 23.</font>
+<font color="#444444">// </font>
+<font color="#444444">// Find the maximum total from top to bottom in triangle.txt (right click and 'Save Link/Target As...'), a 15K text file containing a triangle with one-hundred rows.</font>
+<font color="#444444">// </font>
+<font color="#444444">// NOTE: This is a much more difficult version of Problem 18. It is not possible to try every route to solve this problem, as there are 299 altogether! If you could check one trillion (1012) routes every second it would take over twenty billion years to check them all. There is an efficient algorithm to solve it. ;o) </font>
+<font color="#444444">// </font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;iostream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;string.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;fstream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;vector&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdlib.h&gt;</font></strong></font>
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+
+<font color="#2040a0">vector</font><font color="4444FF">&lt;</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&gt;</font> <font color="#2040a0">readFile</font><font color="4444FF">(</font><strong>const</strong> <font color="#2040a0">string</font> <font color="4444FF">&amp;</font><font color="#2040a0">filename</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><font color="#2040a0">vector</font> <font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&gt;</font><font color="#2040a0">v</font><font color="4444FF">;</font>
+  <font color="#2040a0">ifstream</font> <font color="#2040a0">in</font><font color="4444FF">(</font><font color="#2040a0">filename</font>.<font color="#2040a0">c_str</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  <strong>if</strong><font color="4444FF">(</font><font color="4444FF">!</font><font color="#2040a0">in</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">cerr</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;Cannot open &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">filename</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+      <strong>return</strong> <font color="#2040a0">v</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>while</strong><font color="4444FF">(</font><font color="#2040a0">in</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">vector</font> <font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">x</font><font color="4444FF">;</font>
+      <strong>char</strong> <font color="#2040a0">str</font><font color="4444FF">[</font><font color="#FF0000">65536</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="#2040a0">in</font>.<font color="#2040a0">getline</font><font color="4444FF">(</font><font color="#2040a0">str</font>, <font color="#FF0000">65536</font><font color="4444FF">)</font><font color="4444FF">;</font>      <font color="#444444">// Delimiter defaults to newline</font>
+      <strong>char</strong> <font color="4444FF">*</font> <font color="#2040a0">pch</font><font color="4444FF">;</font>
+      <font color="#2040a0">pch</font> <font color="4444FF">=</font> <font color="#2040a0">strtok</font> <font color="4444FF">(</font><font color="#2040a0">str</font>,<font color="#008000">&quot; &quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <strong>while</strong> <font color="4444FF">(</font><font color="#2040a0">pch</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">NULL</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">x</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">atoi</font><font color="4444FF">(</font><font color="#2040a0">pch</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <font color="#2040a0">pch</font> <font color="4444FF">=</font> <font color="#2040a0">strtok</font> <font color="4444FF">(</font><font color="#2040a0">NULL</font>, <font color="#008000">&quot; &quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">v</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">x</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#2040a0">in</font>.<font color="#2040a0">close</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  <strong>return</strong> <font color="#2040a0">v</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>void</strong> <font color="#2040a0">printTriangle</font><font color="4444FF">(</font><strong>const</strong> <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&gt;</font> <font color="4444FF">&amp;</font><font color="#2040a0">v</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><font color="#2040a0">vector</font> <font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&gt;</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">const_iterator</font> <font color="#2040a0">i</font> <font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="#2040a0">i</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">const_iterator</font> <font color="#2040a0">j</font> <font color="4444FF">=</font> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">i</font><font color="4444FF">)</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <font color="#2040a0">j</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">i</font><font color="4444FF">)</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="4444FF">*</font><font color="#2040a0">j</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot; &quot;</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <strong>int</strong> <font color="#2040a0">max</font><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">x</font>, <strong>int</strong> <font color="#2040a0">y</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>return</strong> <font color="#2040a0">x</font> <font color="4444FF">&gt;</font> <font color="#2040a0">y</font> ? <font color="#2040a0">x</font> <font color="4444FF">:</font> <font color="#2040a0">y</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&gt;</font> <font color="#2040a0">v</font> <font color="4444FF">=</font> <font color="#2040a0">readFile</font><font color="4444FF">(</font><font color="#008000">&quot;prob67.txt&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  <font color="#2040a0">printTriangle</font><font color="4444FF">(</font><font color="#2040a0">v</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+  <strong>const</strong> <strong>int</strong> <font color="#2040a0">num_iterations</font> <font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">size</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+  <font color="#444444">//  cout &lt;&lt; &quot;num_iterations: &quot; &lt;&lt; num_iterations &lt;&lt; endl;</font>
+  <strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#2040a0">num_iterations</font><font color="4444FF">-</font><font color="#FF0000">2</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&gt;</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#444444">//      cout &lt;&lt; &quot;i: &quot; &lt;&lt; i &lt;&lt; endl;</font>
+      <strong>const</strong> <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">working</font> <font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">replacement</font><font color="4444FF">;</font>
+      <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="#2040a0">working</font>.<font color="#2040a0">size</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#444444">//	  cout &lt;&lt; &quot;\tj: &quot; &lt;&lt; j &lt;&lt; endl; </font>
+	  <font color="#444444">//	  cout &lt;&lt; &quot;\t\tworking[j]: &quot; &lt;&lt; working.at(j) &lt;&lt; endl;</font>
+	  <font color="#444444">//	  cout &lt;&lt; &quot;\t\v.at(i+1).at(j): &quot; &lt;&lt; v.at(i+1).at(j) &lt;&lt; endl;</font>
+	  <font color="#444444">//	  cout &lt;&lt; &quot;\t\v.at(i+1).at(j+1): &quot; &lt;&lt; v.at(i+1).at(j+1) &lt;&lt; endl;</font>
+	  <font color="#2040a0">replacement</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">working</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">+</font><font color="#2040a0">max</font><font color="4444FF">(</font><font color="#2040a0">v</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">)</font>,
+						  <font color="#2040a0">v</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font> 
+	<font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">v</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">replacement</font><font color="4444FF">;</font>
+      <font color="#444444">//      printTriangle(v);</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">v</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#FF0000">0</font><font color="4444FF">)</font>.<font color="#2040a0">at</font><font color="4444FF">(</font><font color="#FF0000">0</font><font color="4444FF">)</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

@@ -1,0 +1,67 @@
+<html>
+<head>
+  <title>prob63.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=63>Problem 63</a><br>Filename: prob63.cc<br><pre>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;math.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;list&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;string.h&gt;</font></strong></font>
+
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+<strong>int</strong> <font color="#2040a0">digits</font><font color="4444FF">(</font><strong>double</strong> <font color="#2040a0">num</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>char</strong> <font color="#2040a0">decimal</font><font color="4444FF">[</font><font color="#FF0000">512</font><font color="4444FF">]</font><font color="4444FF">;</font>
+	<font color="#2040a0">sprintf</font><font color="4444FF">(</font><font color="#2040a0">decimal</font>, <font color="#008000">&quot;%lf&quot;</font>, <font color="#2040a0">num</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">strcmp</font><font color="4444FF">(</font><font color="#2040a0">decimal</font>, <font color="#008000">&quot;inf&quot;</font><font color="4444FF">)</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font> <strong>return</strong> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+
+	<strong>char</strong> <font color="4444FF">*</font><font color="#2040a0">pch</font> <font color="4444FF">=</font> <font color="#2040a0">strtok</font> <font color="4444FF">(</font><font color="#2040a0">decimal</font>,<font color="#008000">&quot;.&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<strong>return</strong> <font color="#2040a0">strlen</font><font color="4444FF">(</font><font color="#2040a0">decimal</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">//long long power(int base, int exponent)</font>
+<font color="#444444">//{</font>
+<font color="#444444">//	long long result = 1;</font>
+<font color="#444444">//	for(int i=0; i&lt;exponent; ++i)</font>
+<font color="#444444">//		{</font>
+<font color="#444444">//			const long long prev_result = result;</font>
+<font color="#444444">//			result *= base;</font>
+<font color="#444444">//			if(prev_result &gt; result &amp;&amp; base != 0) return -1;</font>
+<font color="#444444">//		}</font>
+<font color="#444444">//</font>
+<font color="#444444">//	return result;</font>
+<font color="#444444">//}</font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">list</font><font color="4444FF">&lt;</font><strong>long</strong> <strong>long</strong><font color="4444FF">&gt;</font><font color="#2040a0">l</font><font color="4444FF">;</font>
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">digits</font><font color="4444FF">(</font><font color="#2040a0">pow</font><font color="4444FF">(</font><font color="#FF0000">2</font>,<font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">n</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+<font color="#444444">//			printf(&quot;pow(2,%d): %lf\n&quot;, n, pow(2,n));</font>
+<font color="#444444">//			printf(&quot;digits(pow(%d,%d)) : %d     n : %d     pow(%d,%d): %lf\n&quot;, 0, n, digits(pow(0,n)), n, 0, n, pow(0,n));</font>
+			<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">x</font><font color="4444FF">&lt;</font><font color="#FF0000">10</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">x</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<font color="#444444">//					printf(&quot;digits(pow(%d,%d)) : %d     n : %d     pow(%d,%d): %lf\n&quot;, x, n, digits(pow(x,n)), n, x, n, pow(x,n));</font>
+					<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">digits</font><font color="4444FF">(</font><font color="#2040a0">pow</font><font color="4444FF">(</font><font color="#2040a0">x</font>,<font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">n</font><font color="4444FF">)</font> 
+						<font color="4444FF"><strong>{</strong></font>
+							<font color="#2040a0">l</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">pow</font><font color="4444FF">(</font><font color="#2040a0">x</font>,<font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+							<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;x: %d, n: %d<font color="#77dd77">\n</font><font color="#77dd77">\t</font>digits(pow(x,n)): %d<font color="#77dd77">\n</font><font color="#77dd77">\t</font>pow(x,n): %lf<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">x</font>, <font color="#2040a0">n</font>, <font color="#2040a0">digits</font><font color="4444FF">(</font><font color="#2040a0">pow</font><font color="4444FF">(</font><font color="#2040a0">x</font>,<font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font>, <font color="#2040a0">pow</font><font color="4444FF">(</font><font color="#2040a0">x</font>,<font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+						<font color="4444FF"><strong>}</strong></font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+	
+	<font color="#2040a0">l</font>.<font color="#2040a0">sort</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<font color="#2040a0">l</font>.<font color="#2040a0">unique</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+	<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;answer: %d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">l</font>.<font color="#2040a0">size</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+	<strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

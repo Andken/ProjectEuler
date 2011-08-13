@@ -1,0 +1,69 @@
+<html>
+<head>
+  <title>prob38.pl</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=38>Problem 38</a><br>Filename: prob38.pl<br><pre>
+<font color="#444444">#!/usr/bin/perl -w
+
+## Problem 38
+
+# Take the number 192 and multiply it by each of 1, 2, and 3:
+# 
+# 192  1 = 192
+# 192  2 = 384
+# 192  3 = 576
+# By concatenating each product we get the 1 to 9 pandigital, 192384576. We will call 192384576 the concatenated product of 192 and (1,2,3)
+# 
+# The same can be achieved by starting with 9 and multiplying by 1, 2, 3, 4, and 5, giving the pandigital, 918273645, which is the concatenated product of 9 and (1,2,3,4,5).
+# 
+# What is the largest 1 to 9 pandigital 9-digit number that can be formed as the concatenated product of an integer with (1,2, ... , n) where n  1?
+
+</font><strong>use</strong> strict;
+
+<strong>for</strong><font color="4444FF"><strong>(</strong></font><strong>my</strong> <font color="#2040a0">$i</font>=1; <font color="#2040a0">$i</font>&lt;99999; <font color="#2040a0">$i</font> = <font color="#2040a0">$i</font>+1<font color="4444FF"><strong>)</strong></font>
+<font color="4444FF"><strong>{</strong></font>
+    <strong>my</strong> <font color="#2040a0">$working_string</font> = <font color="#008000">&quot;&quot;</font>;
+    <strong>while</strong><font color="4444FF"><strong>(</strong></font><font color="a52a2a"><strong>length</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$working_string</font><font color="4444FF"><strong>)</strong></font> &lt; 9<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>for</strong><font color="4444FF"><strong>(</strong></font><strong>my</strong> <font color="#2040a0">$j</font>=1; <font color="a52a2a"><strong>length</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$working_string</font><font color="4444FF"><strong>)</strong></font> &lt; 9;<font color="#2040a0">$j</font> = <font color="#2040a0">$j</font>+1<font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>my</strong> <font color="#2040a0">$num_to_concat</font> = <font color="#2040a0">$i</font>*<font color="#2040a0">$j</font>;
+	    <font color="#2040a0">$working_string</font> = <font color="a52a2a"><strong>sprintf</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">&quot;<font color="#2040a0">$working_string</font>&quot;</font> . <font color="#008000">&quot;<font color="#2040a0">$num_to_concat</font>&quot;</font><font color="4444FF"><strong>)</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font>isPandigital<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$working_string</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>print</strong></font> <font color="#008000">&quot;PANDIGITAL! <font color="#2040a0">$i</font> <font color="#2040a0">$working_string</font><font color="#77dd77">\n</font>&quot;</font>;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>sub<font color="ff0000"> isPandigital</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$num</font> = <font color="a52a2a"><strong>shift</strong></font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="a52a2a"><strong>length</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$num</font><font color="4444FF"><strong>)</strong></font> != 9<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">$pandigits</font> = <font color="#008000">&quot;123456789&quot;</font>;
+    <strong>my</strong> <font color="#2040a0">$ordered_digits</font> = <font color="a52a2a"><strong>join</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">&quot;&quot;</font>, <font color="a52a2a"><strong>sort</strong></font><font color="4444FF"><strong>(</strong></font><font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">&quot;&quot;</font>, <font color="#2040a0">$num</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$pandigits</font> <strong>eq</strong> <font color="#2040a0">$ordered_digits</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

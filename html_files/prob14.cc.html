@@ -1,0 +1,136 @@
+<html>
+<head>
+  <title>prob14.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=14>Problem 14</a><br>Filename: prob14.cc<br><pre>
+<font color="#444444">// The following iterative sequence is defined for the set of positive integers:</font>
+<font color="#444444">// </font>
+<font color="#444444">// n n/2 (n is even)</font>
+<font color="#444444">// n 3n + 1 (n is odd)</font>
+<font color="#444444">// </font>
+<font color="#444444">// Using the rule above and starting with 13, we generate the following sequence:</font>
+<font color="#444444">// </font>
+<font color="#444444">// 13 40 20 10 5 16 8 4 2 1</font>
+  <font color="#444444">// It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.</font>
+<font color="#444444">// </font>
+<font color="#444444">// Which starting number, under one million, produces the longest chain?</font>
+<font color="#444444">// </font>
+<font color="#444444">// NOTE: Once the chain starts the terms are allowed to go above one million.</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;iostream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;list&gt;</font></strong></font>
+
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+<strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">MAX_BOUND</font> <font color="4444FF">=</font> <font color="#FF0000">1000000</font><font color="4444FF">;</font>
+
+<strong>inline</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">nextNumber</font><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>return</strong> <font color="4444FF">(</font><font color="#2040a0">x</font><font color="4444FF">%</font><font color="#FF0000">2</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font> ? <font color="#2040a0">x</font>/<font color="#FF0000">2</font> <font color="4444FF">:</font> <font color="4444FF">(</font><font color="4444FF">(</font><font color="#FF0000">3</font><font color="4444FF">*</font><font color="#2040a0">x</font><font color="4444FF">)</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <font color="#2040a0">size_t</font> <font color="#2040a0">getSeqLength</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">size_t</font> <font color="#2040a0">length</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">y</font><font color="4444FF">=</font><font color="#2040a0">x</font><font color="4444FF">;</font> <font color="#2040a0">y</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">y</font><font color="4444FF">=</font><font color="#2040a0">nextNumber</font><font color="4444FF">(</font><font color="#2040a0">y</font><font color="4444FF">)</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">length</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#444444">// +1 for the 1 on the end</font>
+  <strong>return</strong> <font color="#2040a0">length</font> <font color="4444FF">+</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">size_t</font> <font color="#2040a0">current_max</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">current</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#2040a0">MAX_BOUND</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&gt;</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+       <font color="#2040a0">size_t</font> <font color="#2040a0">sl</font> <font color="4444FF">=</font> <font color="#2040a0">getSeqLength</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">sl</font> <font color="4444FF">&gt;</font> <font color="#2040a0">current_max</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">current</font> <font color="4444FF">=</font> <font color="#2040a0">i</font><font color="4444FF">;</font>
+	  <font color="#2040a0">current_max</font> <font color="4444FF">=</font> <font color="#2040a0">sl</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;answer: &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">current</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+  
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+
+<font color="0000ff"><strong>#if 0</strong></font>
+<strong>void</strong> <font color="#2040a0">printList</font><font color="4444FF">(</font><strong>const</strong> <font color="#2040a0">list</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&amp;</font><font color="#2040a0">v</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">list</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">const_iterator</font> <font color="#2040a0">i</font> <font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="#2040a0">i</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="4444FF">*</font><font color="#2040a0">i</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;, &quot;</font><font color="4444FF">;</font>
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">nextNumber</font><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">x</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>return</strong> <font color="4444FF">(</font><font color="#2040a0">x</font><font color="4444FF">%</font><font color="#FF0000">2</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font> ? <font color="#2040a0">x</font>/<font color="#FF0000">2</font> <font color="4444FF">:</font> <font color="4444FF">(</font><font color="4444FF">(</font><font color="#FF0000">3</font><font color="4444FF">*</font><font color="#2040a0">x</font><font color="4444FF">)</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>inline</strong> <font color="#2040a0">size_t</font> <font color="#2040a0">checkValueAndRemoveSequenceFromList</font><font color="4444FF">(</font><font color="#2040a0">list</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&amp;</font><font color="#2040a0">v</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">size_t</font> <font color="#2040a0">length</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">y</font><font color="4444FF">=</font><font color="#2040a0">v</font>.<font color="#2040a0">front</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="#2040a0">y</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">y</font><font color="4444FF">=</font><font color="#2040a0">nextNumber</font><font color="4444FF">(</font><font color="#2040a0">y</font><font color="4444FF">)</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">length</font><font color="4444FF">;</font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">y</font><font color="4444FF">%</font><font color="#FF0000">2</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">1</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">y</font> <font color="4444FF">&lt;</font> <font color="#2040a0">MAX_BOUND</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">v</font>.<font color="#2040a0">remove</font><font color="4444FF">(</font><font color="#2040a0">y</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#444444">// +1 for the 1 on the end</font>
+  <strong>return</strong> <font color="#2040a0">length</font> <font color="4444FF">+</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#444444">// create the working list</font>
+
+  <font color="#2040a0">list</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">v</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">3</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">MAX_BOUND</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">v</font>.<font color="#2040a0">push_front</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">current_start</font> <font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">current_max</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>while</strong><font color="4444FF">(</font><font color="#2040a0">v</font>.<font color="#2040a0">size</font><font color="4444FF">(</font><font color="4444FF">)</font> <font color="4444FF">&gt;</font> <font color="#FF0000">1</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">working</font> <font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">front</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <strong>const</strong> <font color="#2040a0">size_t</font> <font color="#2040a0">length</font> <font color="4444FF">=</font> <font color="#2040a0">checkValueAndRemoveSequenceFromList</font><font color="4444FF">(</font><font color="#2040a0">v</font><font color="4444FF">)</font><font color="4444FF">;</font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">length</font> <font color="4444FF">&gt;</font> <font color="#2040a0">current_max</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">current_start</font> <font color="4444FF">=</font> <font color="#2040a0">working</font><font color="4444FF">;</font>
+	  <font color="#2040a0">current_max</font> <font color="4444FF">=</font> <font color="#2040a0">length</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;answer: &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">current_start</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;:(&quot;</font><font color="4444FF">;</font>
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">current_max</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;)&quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+
+
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+<font color="0000ff"><strong>#endif</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

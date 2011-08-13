@@ -1,0 +1,63 @@
+<html>
+<head>
+  <title>prob31.c</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=31>Problem 31</a><br>Filename: prob31.c<br><pre>
+<font color="#444444">/* Problem 31 */</font>
+
+<font color="#444444">/* In England the currency is made up of pound, £, and pence, p, and there are eight coins in general circulation:
+ * 
+ * 1p, 2p, 5p, 10p, 20p, 50p, £1 (100p) and £2 (200p).
+ * It is possible to make £2 in the following way:
+ * 
+ * 1£1 + 150p + 220p + 15p + 12p + 31p
+ * How many different ways can £2 be made using any number of coins?
+ */</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">p1</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p2</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p5</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p10</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p20</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p50</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p100</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p200</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">count</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p1</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p1</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">200</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p1</font><font color="4444FF">)</font>
+    <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p2</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p2</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">100</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p2</font><font color="4444FF">)</font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p5</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p5</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">40</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p5</font><font color="4444FF">)</font>
+	<strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p10</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p10</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">20</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p10</font><font color="4444FF">)</font>
+	  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p20</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p20</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">10</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p20</font><font color="4444FF">)</font>
+	    <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p50</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p50</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">4</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p50</font><font color="4444FF">)</font>
+	      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p100</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p100</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p100</font><font color="4444FF">)</font>
+		<strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p200</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">p200</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p200</font><font color="4444FF">)</font>
+		  <font color="4444FF"><strong>{</strong></font>
+		    <strong>if</strong><font color="4444FF">(</font><font color="#FF0000">1</font><font color="4444FF">*</font><font color="#2040a0">p1</font> <font color="4444FF">+</font> 
+		       <font color="#FF0000">2</font><font color="4444FF">*</font><font color="#2040a0">p2</font> <font color="4444FF">+</font>
+		       <font color="#FF0000">5</font><font color="4444FF">*</font><font color="#2040a0">p5</font> <font color="4444FF">+</font>
+		       <font color="#FF0000">10</font><font color="4444FF">*</font><font color="#2040a0">p10</font> <font color="4444FF">+</font>
+		       <font color="#FF0000">20</font><font color="4444FF">*</font><font color="#2040a0">p20</font> <font color="4444FF">+</font>
+		       <font color="#FF0000">50</font><font color="4444FF">*</font><font color="#2040a0">p50</font> <font color="4444FF">+</font>
+		       <font color="#FF0000">100</font><font color="4444FF">*</font><font color="#2040a0">p100</font> <font color="4444FF">+</font>
+		       <font color="#FF0000">200</font><font color="4444FF">*</font><font color="#2040a0">p200</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">200</font><font color="4444FF">)</font>
+		      <font color="4444FF"><strong>{</strong></font>
+			<font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">count</font><font color="4444FF">;</font>
+		      <font color="4444FF"><strong>}</strong></font>
+		  <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;answer = %d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">count</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

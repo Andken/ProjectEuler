@@ -1,0 +1,21 @@
+<html>
+<head>
+  <title>prob30.hs</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=30>Problem 30</a><br>Filename: prob30.hs<br><pre>
+import Char
+
+n = 5
+
+sum_of_powers_matches_x x = x == sum_of_powers x
+
+sum_of_powers x = sum(map (^n) (map (Char.digitToInt) (show(x))))
+
+answer = sum (filter (sum_of_powers_matches_x) [2..1000000])
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

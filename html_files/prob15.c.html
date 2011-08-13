@@ -1,0 +1,57 @@
+<html>
+<head>
+  <title>prob15.c</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=15>Problem 15</a><br>Filename: prob15.c<br><pre>
+<font color="#444444">/* Problem 15
+ * Starting in the top left corner of a 22 grid, there are 6 routes (without backtracking) to the bottom right corner.
+ * 
+ * 
+ * How many routes are there through a 2020 grid?
+ */</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+
+<font color="0000ff"><strong>#define GRID_SIZE 20</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>long</strong> <strong>long</strong> <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">i</font>,<font color="#2040a0">j</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+      <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&gt;</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&gt;</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">=</font><font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">+</font> <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">GRID_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%020lld &quot;</font>, <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>answer=%lld<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">grid</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

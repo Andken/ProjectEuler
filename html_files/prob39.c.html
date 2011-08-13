@@ -1,0 +1,60 @@
+<html>
+<head>
+  <title>prob39.c</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=39>Problem 39</a><br>Filename: prob39.c<br><pre>
+<font color="#444444">/* If p is the perimeter of a right angle triangle with integral length sides, {a,b,c}, there are exactly three solutions for p = 120.
+ * 
+ * {20,48,52}, {24,45,51}, {30,40,50}
+ * 
+ * For which value of p  1000, is the number of solutions maximised?
+ */</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+
+<font color="#2040a0">inline</font> <strong>int</strong> <font color="#2040a0">solutions</font><font color="4444FF">(</font><strong>const</strong> <strong>int</strong> <font color="#2040a0">p</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">num_solutions</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">i</font>, <font color="#2040a0">j</font><font color="4444FF">;</font>	
+  
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">p</font><font color="4444FF">-</font><font color="#FF0000">2</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">j</font> <font color="4444FF">&lt;</font> <font color="#2040a0">i</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">j</font> <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="4444FF">(</font><font color="#2040a0">p</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <strong>if</strong><font color="4444FF">(</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">*</font><font color="#2040a0">i</font> <font color="4444FF">+</font> <font color="#2040a0">j</font><font color="4444FF">*</font><font color="#2040a0">j</font><font color="4444FF">)</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="4444FF">(</font><font color="#2040a0">p</font><font color="4444FF">-</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">*</font><font color="4444FF">(</font><font color="#2040a0">p</font><font color="4444FF">-</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="#2040a0">num_solutions</font><font color="4444FF">+</font><font color="4444FF">+</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <strong>return</strong> <font color="#2040a0">num_solutions</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">max</font> <font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">max_perim</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">p</font><font color="4444FF">;</font>
+  
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">p</font> <font color="4444FF">=</font> <font color="#FF0000">3</font><font color="4444FF">;</font> <font color="#2040a0">p</font> <font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">1000</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">p</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">max</font> <font color="4444FF">&lt;</font> <font color="#2040a0">solutions</font><font color="4444FF">(</font><font color="#2040a0">p</font><font color="4444FF">)</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">max</font> <font color="4444FF">=</font> <font color="#2040a0">solutions</font><font color="4444FF">(</font><font color="#2040a0">p</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <font color="#2040a0">max_perim</font> <font color="4444FF">=</font> <font color="#2040a0">p</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;max_perim: %d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">max_perim</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

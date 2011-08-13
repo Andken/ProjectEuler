@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title>prob48.hs</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=48>Problem 48</a><br>Filename: prob48.hs<br><pre>
+-- Prob 48
+-- The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.
+--
+-- Find the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000.
+
+
+module Prob48
+    where
+      calc n = n^n
+      working = (show(sum(map (calc) [1..1000])))
+      answer = drop (length(working)-10) working
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

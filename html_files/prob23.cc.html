@@ -1,0 +1,111 @@
+<html>
+<head>
+  <title>prob23.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=23>Problem 23</a><br>Filename: prob23.cc<br><pre>
+<font color="#444444">// problem 23</font>
+<font color="#444444">// </font>
+<font color="#444444">// A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.</font>
+<font color="#444444">// </font>
+<font color="#444444">// A number n is called deficient if the sum of its proper divisors is less than n and it is called abundant if this sum exceeds n.</font>
+<font color="#444444">// </font>
+<font color="#444444">// As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit.</font>
+<font color="#444444">// </font>
+<font color="#444444">// Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;iostream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;vector&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;algorithm&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;math.h&gt;</font></strong></font>
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+<strong>inline</strong> <strong>bool</strong> <font color="#2040a0">isAbundant</font><font color="4444FF">(</font><strong>const</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>int</strong> <font color="#2040a0">factor_sum</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">;</font>
+		<font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">sqrt</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">;</font>
+		<font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">%</font><font color="#2040a0">i</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<font color="#2040a0">factor_sum</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">i</font><font color="4444FF">;</font>
+					<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">sqrt</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">)</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">i</font><font color="4444FF">)</font>
+						<font color="4444FF"><strong>{</strong></font>
+							<font color="#2040a0">factor_sum</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">n</font>/<font color="#2040a0">i</font><font color="4444FF">;</font>
+						<font color="4444FF"><strong>}</strong></font>
+					
+					<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">factor_sum</font> <font color="4444FF">&gt;</font> <font color="#2040a0">n</font><font color="4444FF">)</font>
+						<font color="4444FF"><strong>{</strong></font>
+							<strong>return</strong> <strong>true</strong><font color="4444FF">;</font>
+						<font color="4444FF"><strong>}</strong></font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+	<strong>return</strong> <font color="#2040a0">factor_sum</font> <font color="4444FF">&gt;</font> <font color="#2040a0">n</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>void</strong> <font color="#2040a0">printVector</font><font color="4444FF">(</font><strong>const</strong> <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&amp;</font><font color="#2040a0">v</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>for</strong><font color="4444FF">(</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">const_iterator</font> <font color="#2040a0">i</font> <font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+		<font color="#2040a0">i</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">v</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+		<font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="4444FF">*</font><font color="#2040a0">i</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot; &quot;</font><font color="4444FF">;</font>
+		<font color="4444FF"><strong>}</strong></font>
+	<font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">abundant_numbers</font><font color="4444FF">;</font>
+
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">12</font><font color="4444FF">;</font>
+		<font color="#2040a0">i</font> <font color="4444FF">&lt;</font> <font color="#FF0000">28123</font><font color="4444FF">;</font>
+		<font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isAbundant</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<font color="#2040a0">abundant_numbers</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+
+	<font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">abundant_number_sums</font><font color="4444FF">;</font>
+	<strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">abundant_numbers</font>.<font color="#2040a0">size</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">j</font><font color="4444FF">=</font><font color="#2040a0">i</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="#2040a0">abundant_numbers</font>.<font color="#2040a0">size</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<strong>if</strong><font color="4444FF">(</font><font color="4444FF">(</font><font color="#2040a0">abundant_numbers</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">+</font><font color="#2040a0">abundant_numbers</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">&lt;</font><font color="#FF0000">28123</font><font color="4444FF">)</font>
+						<font color="4444FF"><strong>{</strong></font>
+							<font color="#2040a0">abundant_number_sums</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">abundant_numbers</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">+</font><font color="#2040a0">abundant_numbers</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>
+						<font color="4444FF"><strong>}</strong></font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+
+	<font color="#2040a0">std</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">sort</font><font color="4444FF">(</font><font color="#2040a0">abundant_number_sums</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font>, <font color="#2040a0">abundant_number_sums</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+	<strong>long</strong> <strong>long</strong> <font color="#2040a0">running_total</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+	<font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>int</strong><font color="4444FF">&gt;</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">const_iterator</font> <font color="#2040a0">i</font> <font color="4444FF">=</font> <font color="#2040a0">abundant_number_sums</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="#FF0000">28123</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>while</strong><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">i</font> <font color="4444FF">&lt;</font> <font color="#2040a0">j</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+
+			<strong>if</strong><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">i</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">j</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<font color="#2040a0">running_total</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">j</font><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+
+	<font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;answer: &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">running_total</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+	<strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

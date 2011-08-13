@@ -1,0 +1,164 @@
+<html>
+<head>
+  <title>prob19.pl</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=19>Problem 19</a><br>Filename: prob19.pl<br><pre>
+<font color="#444444">#!/usr/bin/perl -w
+
+</font><strong>use</strong> strict;
+
+<strong>my</strong> <font color="#2040a0">$year</font> = 1901;
+
+<font color="#444444"># Jan 1 1901 is a tuesday
+</font><strong>my</strong> <font color="#2040a0">$day</font> = 2;
+
+<strong>my</strong> <font color="#2040a0">$num_sundays_on_first</font> = 0;
+
+<strong>while</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$year</font> &lt;= 2000<font color="4444FF"><strong>)</strong></font>
+<font color="4444FF"><strong>{</strong></font>
+    <font color="#444444"># Jan
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    <font color="#444444">#Feb
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font>leap_year<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$year</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+29;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+28;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#444444"># Mar
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    <font color="#444444"># Apr
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+30;
+    
+    <font color="#444444"># May
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    <font color="#444444"># Jun
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+30;
+    
+    <font color="#444444"># Jul
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    <font color="#444444"># Aug
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    <font color="#444444"># Sept
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+30;
+    
+    <font color="#444444"># Oct
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    <font color="#444444"># Nov
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+30;
+    
+    <font color="#444444"># Dec
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$day</font> <font color="#2040a0">% </font>7 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$num_sundays_on_first</font> = <font color="#2040a0">$num_sundays_on_first</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <font color="#2040a0">$day</font> = <font color="#2040a0">$day</font>+31;
+    
+    
+    <font color="#2040a0">$year</font>++;
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="a52a2a"><strong>printf</strong></font> <font color="#008000">&quot;num_sundays = <font color="#2040a0">$num_sundays_on_first</font><font color="#77dd77">\n</font>&quot;</font>;
+
+
+
+
+
+<strong>sub<font color="ff0000"> leap_year</font> {</strong>
+    <strong>my</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$year</font><font color="4444FF"><strong>)</strong></font> = <font color="#2040a0">@_</font>;
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$year</font> <font color="#2040a0">% </font>4 == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$year</font> <font color="#2040a0">% </font>100 == 0<font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$year</font> <font color="#2040a0">% </font>400 == 0<font color="4444FF"><strong>)</strong></font>
+	    <font color="4444FF"><strong>{</strong></font>
+		<strong>return</strong> 1;
+	    <font color="4444FF"><strong>}</strong></font>
+	    <strong>else</strong>
+	    <font color="4444FF"><strong>{</strong></font>
+		<strong>return</strong> 0;
+	    <font color="4444FF"><strong>}</strong></font>
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>else</strong>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> 1;
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

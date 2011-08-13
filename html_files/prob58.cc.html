@@ -1,0 +1,104 @@
+<html>
+<head>
+  <title>prob58.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=58>Problem 58</a><br>Filename: prob58.cc<br><pre>
+<font color="#444444">// Problem 58</font>
+<font color="#444444">//</font>
+<font color="#444444">//Starting with 1 and spiralling anticlockwise in the following way, a square spiral with side length 7 is formed.</font>
+<font color="#444444">//</font>
+<font color="#444444">//37 36 35 34 33 32 31</font>
+<font color="#444444">//38 17 16 15 14 13 30</font>
+<font color="#444444">//39 18  5  4  3 12 29</font>
+<font color="#444444">//40 19  6  1  2 11 28</font>
+<font color="#444444">//41 20  7  8  9 10 27</font>
+<font color="#444444">//42 21 22 23 24 25 26</font>
+<font color="#444444">//43 44 45 46 47 48 49</font>
+<font color="#444444">//</font>
+<font color="#444444">//  It is interesting to note that the odd squares lie along the bottom right diagonal, but what is more interesting is that 8 out of the 13 numbers lying along both diagonals are prime; that is, a ratio of 8/13  62%.</font>
+<font color="#444444">//</font>
+<font color="#444444">//																							   If one complete new layer is wrapped around the spiral above, a square spiral with side length 9 will be formed. If this process is continued, what is the side length of the square spiral for which the ratio of primes along both diagonals first falls below 10%?</font>
+<font color="#444444">//</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;math.h&gt;</font></strong></font>
+
+
+<strong>static</strong> <strong>bool</strong> <font color="#2040a0">isPrime</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">=</font><font color="4444FF">=</font><font color="#FF0000">2</font> <font color="4444FF">|</font><font color="4444FF">|</font> <font color="#2040a0">n</font><font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">3</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> <strong>true</strong><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#444444">// short cuts to reduce search space</font>
+  <strong>if</strong><font color="4444FF">(</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">%</font><font color="#FF0000">6</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">0</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font>
+     <font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">%</font><font color="#FF0000">6</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>return</strong> <strong>false</strong><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">3</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">ceil</font><font color="4444FF">(</font><font color="#2040a0">sqrt</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">%</font><font color="#2040a0">i</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+        <font color="4444FF"><strong>{</strong></font>
+          <strong>return</strong> <strong>false</strong><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+  <strong>return</strong> <strong>true</strong><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">num_primes</font> <font color="4444FF">=</font> <font color="#FF0000">8</font><font color="4444FF">;</font>
+
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">ne</font><font color="4444FF">=</font><font color="#FF0000">31</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">ne_inc</font><font color="4444FF">=</font><font color="#FF0000">26</font><font color="4444FF">;</font>
+
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">nw</font><font color="4444FF">=</font><font color="#FF0000">37</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">nw_inc</font><font color="4444FF">=</font><font color="#FF0000">28</font><font color="4444FF">;</font>
+
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">sw</font><font color="4444FF">=</font><font color="#FF0000">43</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">sw_inc</font><font color="4444FF">=</font><font color="#FF0000">30</font><font color="4444FF">;</font>
+
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">se</font><font color="4444FF">=</font><font color="#FF0000">49</font><font color="4444FF">;</font>
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">se_inc</font><font color="4444FF">=</font><font color="#FF0000">32</font><font color="4444FF">;</font>
+
+  <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">side_length</font> <font color="4444FF">=</font> <font color="#FF0000">7</font><font color="4444FF">;</font>
+  
+  <strong>while</strong><font color="4444FF">(</font><font color="4444FF">(</font><strong>float</strong><font color="4444FF">)</font><font color="#2040a0">num_primes</font>/<font color="4444FF">(</font><strong>float</strong><font color="4444FF">)</font><font color="4444FF">(</font><font color="4444FF">(</font><font color="#2040a0">side_length</font><font color="4444FF">*</font><font color="#FF0000">2</font><font color="4444FF">)</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font> <font color="4444FF">&gt;</font> <font color="#FF0000">0.10</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="#2040a0">side_length</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">;</font>
+      
+      <font color="#2040a0">ne</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#2040a0">ne_inc</font><font color="4444FF">;</font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">ne</font><font color="4444FF">)</font><font color="4444FF">)</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">num_primes</font><font color="4444FF">;</font>
+      <font color="#2040a0">ne_inc</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">8</font><font color="4444FF">;</font>
+      
+      <font color="#2040a0">nw</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#2040a0">nw_inc</font><font color="4444FF">;</font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">nw</font><font color="4444FF">)</font><font color="4444FF">)</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">num_primes</font><font color="4444FF">;</font>
+      <font color="#2040a0">nw_inc</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">8</font><font color="4444FF">;</font>
+      
+      <font color="#2040a0">sw</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#2040a0">sw_inc</font><font color="4444FF">;</font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">sw</font><font color="4444FF">)</font><font color="4444FF">)</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">num_primes</font><font color="4444FF">;</font>
+      <font color="#2040a0">sw_inc</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">8</font><font color="4444FF">;</font>
+      
+      <font color="#2040a0">se</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#2040a0">se_inc</font><font color="4444FF">;</font>
+      <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">se</font><font color="4444FF">)</font><font color="4444FF">)</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">num_primes</font><font color="4444FF">;</font>
+      <font color="#2040a0">se_inc</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">8</font><font color="4444FF">;</font>
+      
+      <font color="#444444">//      printf(&quot;%f\n&quot;, (float)num_primes/(float)((side_length*2)-1));</font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;answer: %d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">side_length</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

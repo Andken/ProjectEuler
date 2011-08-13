@@ -1,0 +1,148 @@
+<html>
+<head>
+  <title>prob28.c</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=28>Problem 28</a><br>Filename: prob28.c<br><pre>
+// <font color="#2040a0">Problem</font> <font color="#FF0000">28</font>
+// 
+// <font color="#2040a0">Starting</font> <font color="#2040a0">with</font> <font color="#2040a0">the</font> <font color="#2040a0">number</font> <font color="#FF0000">1</font> <font color="#2040a0">and</font> <font color="#2040a0">moving</font> <font color="#2040a0">to</font> <font color="#2040a0">the</font> <font color="#2040a0">right</font> <font color="#2040a0">in</font> <font color="#2040a0">a</font> <font color="#2040a0">clockwise</font> <font color="#2040a0">direction</font> <font color="#2040a0">a</font> <font color="#FF0000">5</font> <font color="#2040a0">by</font> <font color="#FF0000">5</font> <font color="#2040a0">spiral</font> <font color="#2040a0">is</font> <font color="#2040a0">formed</font> <font color="#2040a0">as</font> <font color="#2040a0">follows</font><font color="4444FF">:</font>
+// 
+// <font color="#FF0000">21</font> <font color="#FF0000">22</font> <font color="#FF0000">23</font> <font color="#FF0000">24</font> <font color="#FF0000">25</font>
+// <font color="#FF0000">20</font>  <font color="#FF0000">7</font>  <font color="#FF0000">8</font>  <font color="#FF0000">9</font> <font color="#FF0000">10</font>
+// <font color="#FF0000">19</font>  <font color="#FF0000">6</font>  <font color="#FF0000">1</font>  <font color="#FF0000">2</font> <font color="#FF0000">11</font>
+// <font color="#FF0000">18</font>  <font color="#FF0000">5</font>  <font color="#FF0000">4</font>  <font color="#FF0000">3</font> <font color="#FF0000">12</font>
+// <font color="#FF0000">17</font> <font color="#FF0000">16</font> <font color="#FF0000">15</font> <font color="#FF0000">14</font> <font color="#FF0000">13</font>
+// 
+// <font color="#2040a0">It</font> <font color="#2040a0">can</font> <font color="#2040a0">be</font> <font color="#2040a0">verified</font> <font color="#2040a0">that</font> <font color="#2040a0">the</font> <font color="#2040a0">sum</font> <font color="#2040a0">of</font> <font color="#2040a0">the</font> <font color="#2040a0">numbers</font> <font color="#2040a0">on</font> <font color="#2040a0">the</font> <font color="#2040a0">diagonals</font> <font color="#2040a0">is</font> <font color="#FF0000">101</font>.
+// 
+// <font color="#2040a0">What</font> <font color="#2040a0">is</font> <font color="#2040a0">the</font> <font color="#2040a0">sum</font> <font color="#2040a0">of</font> <font color="#2040a0">the</font> <font color="#2040a0">numbers</font> <font color="#2040a0">on</font> <font color="#2040a0">the</font> <font color="#2040a0">diagonals</font> <font color="#2040a0">in</font> <font color="#2040a0">a</font> <font color="#FF0000">1001</font> <font color="#2040a0">by</font> <font color="#FF0000">1001</font> <font color="#2040a0">spiral</font> <font color="#2040a0">formed</font> <font color="#2040a0">in</font> <font color="#2040a0">the</font> <font color="#2040a0">same</font> <font color="#2040a0">way</font>?
+
+
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+
+<font color="0000ff"><strong>#define SPIRAL_SIZE 1001</strong></font>
+
+<strong>enum</strong>
+  <font color="4444FF"><strong>{</strong></font>
+    <font color="#2040a0">RIGHT</font>,
+    <font color="#2040a0">LEFT</font>,
+    <font color="#2040a0">UP</font>,
+    <font color="#2040a0">DOWN</font>
+  <font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+
+<strong>int</strong> <font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">]</font><font color="4444FF">;</font>
+
+<strong>void</strong> <font color="#2040a0">print_spiral</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">j</font><font color="4444FF">;</font>
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+	<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%03d &quot;</font>, <font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">)</font><font color="4444FF">;</font>  
+
+      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">i</font>, <font color="#2040a0">j</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+      <font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+  
+
+  <strong>int</strong> <font color="#2040a0">x</font> <font color="4444FF">=</font> <font color="#2040a0">SPIRAL_SIZE</font>/<font color="#FF0000">2</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">y</font> <font color="4444FF">=</font> <font color="#2040a0">SPIRAL_SIZE</font>/<font color="#FF0000">2</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">cur_value</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">UP</font><font color="4444FF">;</font>
+
+  <strong>while</strong><font color="4444FF">(</font><font color="#2040a0">cur_value</font> <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">*</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>      
+      <font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">x</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">y</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">cur_value</font><font color="4444FF">;</font>
+      //      <font color="#2040a0">print_spiral</font><font color="4444FF">(</font><font color="#2040a0">spiral</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+      <strong>switch</strong><font color="4444FF">(</font><font color="#2040a0">last_direction</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	<strong>case</strong> <font color="#2040a0">UP</font><font color="4444FF">:</font>
+	  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">x</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">y</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">x</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">RIGHT</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>else</strong>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">y</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">UP</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>break</strong><font color="4444FF">;</font>
+	<strong>case</strong> <font color="#2040a0">DOWN</font><font color="4444FF">:</font>
+	  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">x</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">y</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">x</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">LEFT</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>else</strong>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">y</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">DOWN</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>break</strong><font color="4444FF">;</font>
+	<strong>case</strong> <font color="#2040a0">RIGHT</font><font color="4444FF">:</font>
+	  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">x</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">y</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">y</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">DOWN</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>else</strong>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">x</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">RIGHT</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>break</strong><font color="4444FF">;</font>
+	<strong>case</strong> <font color="#2040a0">LEFT</font><font color="4444FF">:</font>
+	  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">x</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">y</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">y</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">UP</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>else</strong>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">x</font><font color="4444FF">;</font>
+	      <font color="#2040a0">last_direction</font> <font color="4444FF">=</font> <font color="#2040a0">LEFT</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	  <strong>break</strong><font color="4444FF">;</font>
+	<strong>default</strong><font color="4444FF">:</font>
+	  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;ERROR<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <strong>break</strong><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+
+      <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">cur_value</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+
+
+  // <font color="#2040a0">add</font> <font color="#2040a0">up</font> <font color="#2040a0">diagonals</font>
+  <strong>int</strong> <font color="#2040a0">total</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="#2040a0">total</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+    <font color="#2040a0">total</font> <font color="4444FF">+</font><font color="4444FF">=</font> <font color="#2040a0">spiral</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">[</font><font color="#2040a0">SPIRAL_SIZE</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+
+
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">total</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">;</font>
+
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

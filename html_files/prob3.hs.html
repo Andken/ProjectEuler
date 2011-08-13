@@ -1,0 +1,37 @@
+<html>
+<head>
+  <title>prob3.hs</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=3>Problem 3</a><br>Filename: prob3.hs<br><pre>
+--The prime factors of 13195 are 5, 7, 13 and 29.
+--
+--What is the largest prime factor of the number 600851475143 ?
+
+module Prob3
+    where
+      number = 600851475143
+--      number = 13195
+
+      largest x = 
+           if (x `div` smallest x) == 1
+           then x
+           else
+               largest (x `div` smallest x)
+
+      smallest 1 = 1
+      smallest y = 
+          if even y
+          then 2
+          else
+              fromIntegral(last(takeWhile ((\x -&gt; (y `rem` x &gt; 0) &amp;&amp; (x&lt;y))) [2..]) + 1)
+          
+      answer = largest number
+
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

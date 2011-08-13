@@ -1,0 +1,21 @@
+<html>
+<head>
+  <title>prob4.hs</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=4>Problem 4</a><br>Filename: prob4.hs<br><pre>
+--A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91  99.
+--
+--Find the largest palindrome made from the product of two 3-digit numbers.
+module Prob4
+    where
+      isPalindrome x = x == (read (reverse (show x))::Integer)
+  
+      answer = maximum(filter isPalindrome ([x*y | x &lt;- [100..999], y &lt;- [100..999]]))
+
+    
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

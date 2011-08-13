@@ -1,0 +1,54 @@
+<html>
+<head>
+  <title>prob22.pl</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=22>Problem 22</a><br>Filename: prob22.pl<br><pre>
+<font color="#444444">#!/usr/bin/perl -w
+
+</font><strong>use</strong> strict;
+
+<font color="#444444"># slurp in the file
+</font><font color="a52a2a"><strong>open</strong></font><font color="4444FF"><strong>(</strong></font>FH, <font color="#008000">&quot;names.txt&quot;</font><font color="4444FF"><strong>)</strong></font> <strong>or</strong> <strong>die</strong> <font color="#008000">&quot;couldn't open&quot;</font>;
+<strong>my</strong> <font color="#2040a0">@name_file</font> = &lt;FH&gt;;
+<font color="a52a2a"><strong>close</strong></font> FH;
+
+<strong>my</strong> <font color="#2040a0">@names</font> = <font color="a52a2a"><strong>sort</strong></font><font color="4444FF"><strong>(</strong></font><font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="b000d0">/,/</font>, <font color="#2040a0">$name_file</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+
+<font color="#444444">#printf &quot;XXX: &quot; . nameScore(&quot;\&quot;COLIN\&quot;&quot;) . &quot;\n&quot;;
+#die &quot;XXXXXXXXX&quot;;
+
+</font><strong>my</strong> <font color="#2040a0">$index</font> = 0;
+<strong>my</strong> <font color="#2040a0">$total</font> = 0;
+<strong>foreach</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@names</font><font color="4444FF"><strong>)</strong></font>
+<font color="4444FF"><strong>{</strong></font>
+    <strong>my</strong> <font color="#2040a0">$name_score</font> = nameScore<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="#2040a0">$index</font>=<font color="#2040a0">$index</font>+1;
+    <font color="#2040a0">$total</font> = <font color="#2040a0">$total</font> + <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$index</font>*<font color="#2040a0">$name_score</font><font color="4444FF"><strong>)</strong></font>;
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="a52a2a"><strong>print</strong></font> <font color="#008000">&quot;total: <font color="#2040a0">$total</font><font color="#77dd77">\n</font>&quot;</font>;
+
+<strong>sub<font color="ff0000"> nameScore</font>
+{</strong>
+    <strong>my</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$name</font><font color="4444FF"><strong>)</strong></font> = <font color="#2040a0">@_</font>;
+    <strong>my</strong> <font color="#2040a0">@letters</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="b000d0">//</font>,<font color="#2040a0">$name</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">$total</font> = 0;
+
+    <strong>foreach</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@letters</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font> <strong>ne</strong> <font color="#008000">&quot;<font color="#77dd77">\&quot;</font>&quot;</font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <font color="#2040a0">$total</font> = <font color="#2040a0">$total</font> + <font color="a52a2a"><strong>ord</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font>-64;
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>return</strong> <font color="#2040a0">$total</font>;
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

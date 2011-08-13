@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>prob17.hs</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=17>Problem 17</a><br>Filename: prob17.hs<br><pre>
+max = 1000
+
+singleNum 1000 = (singleNum 1) + length(&quot;thousand&quot;)
+singleNum 1 = length(&quot;one&quot;)
+singleNum 2 = length(&quot;two&quot;)
+singleNum 3 = length(&quot;three&quot;)
+singleNum 4 = length(&quot;four&quot;)
+singleNum 5 = length(&quot;five&quot;)
+singleNum 6 = length(&quot;six&quot;)
+singleNum 7 = length(&quot;seven&quot;)
+singleNum 8 = length(&quot;eight&quot;)
+singleNum 9 = length(&quot;nine&quot;)
+singleNum n = 
+	if n &gt;=100 &amp;&amp; n &lt;= 999
+	   then if((n `mod` 100) == 0)
+	     	then (singleNum (n `div` 100)) + length(&quot;hundred&quot;)
+	   else (singleNum (n `div` 100)) + length(&quot;hundred&quot;) + length(&quot;and&quot;) + (singleNum (n `mod` 100))
+	else if n &gt;=20 &amp;&amp; n &lt; 30
+		then length(&quot;twenty&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=30 &amp;&amp; n &lt;= 39
+		then length(&quot;thirty&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=40 &amp;&amp; n &lt;= 49
+		then length(&quot;forty&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=50 &amp;&amp; n &lt;= 59
+		then length(&quot;fifty&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=60 &amp;&amp; n &lt;= 69
+		then length(&quot;sixty&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=70 &amp;&amp; n &lt;= 79
+		then length(&quot;seventy&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=80 &amp;&amp; n &lt;= 89
+		then length(&quot;eighty&quot;) + (singleNum (n `mod` 10))
+	else if n &gt;=90 &amp;&amp; n &lt;= 99
+		then length(&quot;ninety&quot;) + (singleNum (n `mod` 10))
+	else if n == 10
+	     	then length(&quot;ten&quot;)
+	else if n == 11
+	     	then length(&quot;eleven&quot;)
+	else if n == 12
+	     	then length(&quot;twelve&quot;)
+	else if n == 13
+	     	then length(&quot;thirteen&quot;)
+	else if n == 14
+	     	then length(&quot;fourteen&quot;)
+	else if n == 15
+	     	then length(&quot;fifteen&quot;)
+	else if n == 16
+	     	then length(&quot;sixteen&quot;)
+	else if n == 17
+	     	then length(&quot;seventeen&quot;)
+	else if n == 18
+	     	then length(&quot;eighteen&quot;)
+	else if n == 19
+	     	then length(&quot;nineteen&quot;)
+	else 0
+
+answer = sum(map singleNum [1..1000])
+
+
+
+
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

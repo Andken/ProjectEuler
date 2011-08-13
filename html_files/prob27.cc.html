@@ -1,0 +1,109 @@
+<html>
+<head>
+  <title>prob27.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=27>Problem 27</a><br>Filename: prob27.cc<br><pre>
+<font color="#444444">// Prob 27</font>
+<font color="#444444">// Euler published the remarkable quadratic formula:</font>
+<font color="#444444">// </font>
+<font color="#444444">// n² + n + 41</font>
+<font color="#444444">// </font>
+<font color="#444444">// It turns out that the formula will produce 40 primes for the consecutive values n = 0 to 39. However, when n = 40, 402 + 40 + 41 = 40(40 + 1) + 41 is divisible by 41, and certainly when n = 41, 41² + 41 + 41 is clearly divisible by 41.</font>
+<font color="#444444">// </font>
+<font color="#444444">// Using computers, the incredible formula  n²  79n + 1601 was discovered, which produces 80 primes for the consecutive values n = 0 to 79. The product of the coefficients, 79 and 1601, is 126479.</font>
+<font color="#444444">// </font>
+<font color="#444444">// Considering quadratics of the form:</font>
+<font color="#444444">// </font>
+<font color="#444444">// n² + an + b, where |a|  1000 and |b|  1000</font>
+<font color="#444444">// </font>
+<font color="#444444">// where |n| is the modulus/absolute value of n</font>
+<font color="#444444">// e.g. |11| = 11 and |4| = 4</font>
+<font color="#444444">// Find the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n = 0.</font>
+<font color="#444444">// </font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;iostream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;math.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;sstream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;vector&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;algorithm&gt;</font></strong></font>
+
+<font color="0000ff"><strong>#define UB (80*80)+(80*1000)+(1000)</strong></font>
+
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+<strong>static</strong> <strong>inline</strong> <strong>bool</strong> <font color="#2040a0">isPrime</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">n</font>, <strong>const</strong> <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font> <font color="4444FF">&amp;</font><font color="#2040a0">primes</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> <font color="#2040a0">primes</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">find</font><font color="4444FF">(</font><font color="#2040a0">primes</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font>, <font color="#2040a0">primes</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font>, <font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>static</strong> <strong>bool</strong> <font color="#2040a0">isPrime</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">%</font><font color="#FF0000">2</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font> <strong>return</strong> <strong>false</strong><font color="4444FF">;</font>
+	
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">3</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">ceil</font><font color="4444FF">(</font><font color="#2040a0">sqrt</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">%</font><font color="#2040a0">i</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<strong>return</strong> <strong>false</strong><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+	
+	<strong>return</strong> <strong>true</strong><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>static</strong> <strong>inline</strong> <strong>int</strong> <font color="#2040a0">qf</font><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">a</font>, <strong>int</strong> <font color="#2040a0">b</font>, <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> <font color="#2040a0">n</font><font color="4444FF">*</font><font color="#2040a0">n</font> <font color="4444FF">+</font> <font color="#2040a0">a</font><font color="4444FF">*</font><font color="#2040a0">n</font> <font color="4444FF">+</font> <font color="#2040a0">b</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font> <font color="#2040a0">primes</font><font color="4444FF">;</font>
+  <font color="#2040a0">primes</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#FF0000">2</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  <strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">3</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">UB</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">)</font>
+	  <font color="4444FF"><strong>{</strong></font>
+		  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">)</font>
+			  <font color="4444FF"><strong>{</strong></font>
+				  <font color="#2040a0">primes</font>.<font color="#2040a0">push_back</font><font color="4444FF">(</font><font color="#2040a0">i</font><font color="4444FF">)</font><font color="4444FF">;</font>
+			  <font color="4444FF"><strong>}</strong></font>
+	  <font color="4444FF"><strong>}</strong></font>
+
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;starting (&quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">UB</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;)&quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+  
+  <strong>int</strong> <font color="#2040a0">max_a</font> <font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1001</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">max_b</font> <font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1001</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">max_n</font> <font color="4444FF">=</font> <font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">vector</font><font color="4444FF">&lt;</font><strong>unsigned</strong> <strong>int</strong><font color="4444FF">&gt;</font><font color="4444FF">:</font><font color="4444FF">:</font><font color="#2040a0">const_iterator</font> <font color="#2040a0">b</font> <font color="4444FF">=</font> <font color="#2040a0">primes</font>.<font color="#2040a0">begin</font><font color="4444FF">(</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <font color="#2040a0">b</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#2040a0">primes</font>.<font color="#2040a0">end</font><font color="4444FF">(</font><font color="4444FF">)</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="4444FF">*</font><font color="#2040a0">b</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">1000</font><font color="4444FF">;</font>
+	  <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">b</font><font color="4444FF">)</font>
+	  <font color="4444FF"><strong>{</strong></font>
+		  <strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">a</font><font color="4444FF">=</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">*</font><font color="4444FF">(</font><font color="4444FF">*</font><font color="#2040a0">b</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="#2040a0">a</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">1000</font><font color="4444FF">;</font> <font color="#2040a0">a</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">)</font>			  
+			  <font color="4444FF"><strong>{</strong></font>
+				  <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font>
+				  <strong>while</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">qf</font><font color="4444FF">(</font><font color="#2040a0">a</font>,<font color="4444FF">*</font><font color="#2040a0">b</font>,<font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">)</font>
+					  <font color="4444FF"><strong>{</strong></font>
+						  <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">n</font><font color="4444FF">;</font>
+					  <font color="4444FF"><strong>}</strong></font>
+				  
+				  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">&gt;</font><font color="#2040a0">max_n</font><font color="4444FF">)</font>
+					  <font color="4444FF"><strong>{</strong></font>
+						  <font color="#2040a0">max_n</font> <font color="4444FF">=</font> <font color="#2040a0">n</font><font color="4444FF">;</font>
+						  <font color="#2040a0">max_a</font> <font color="4444FF">=</font> <font color="#2040a0">a</font><font color="4444FF">;</font>
+						  <font color="#2040a0">max_b</font> <font color="4444FF">=</font> <font color="4444FF">*</font><font color="#2040a0">b</font><font color="4444FF">;</font>
+					  <font color="4444FF"><strong>}</strong></font>
+			  <font color="4444FF"><strong>}</strong></font>
+	  <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;answer: (n^2 + &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">max_a</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;n + &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">max_b</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;) and n = 0 - &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">max_n</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+  <font color="#2040a0">cout</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#008000">&quot;answer: &quot;</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">max_a</font> <font color="4444FF">*</font> <font color="#2040a0">max_b</font> <font color="4444FF">&lt;</font><font color="4444FF">&lt;</font> <font color="#2040a0">endl</font><font color="4444FF">;</font>
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

@@ -1,0 +1,167 @@
+<html>
+<head>
+  <title>prob41.cc</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=41>Problem 41</a><br>Filename: prob41.cc<br><pre>
+<font color="#444444">// Problem 41</font>
+
+<font color="#444444">// We shall say that an n-digit number is pandigital if it makes use of all the digits 1 to n exactly once. For example, 2143 is a 4-digit pandigital and is also prime.</font>
+<font color="#444444">// </font>
+<font color="#444444">// What is the largest n-digit pandigital prime that exists?</font>
+
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;math.h&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;sstream&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;vector&gt;</font></strong></font>
+<font color="0000ff"><strong>#include <font color="#008000">&lt;algorithm&gt;</font></strong></font>
+
+<font color="0000ff"><strong>#define UB 987654321</strong></font>
+<font color="0000ff"><strong>#define NUMBER_OF_LR_TRUNC_PRIMES 11</strong></font>
+<font color="0000ff"><strong>#define NUM_PERMS 362880</strong></font>
+
+<strong>using</strong> <strong>namespace</strong> <font color="#2040a0">std</font><font color="4444FF">;</font>
+
+<strong>static</strong> <strong>bool</strong> <font color="#2040a0">isPrime</font><font color="4444FF">(</font><strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">%</font><font color="#FF0000">2</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font> <strong>return</strong> <strong>false</strong><font color="4444FF">;</font>
+	
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">3</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#2040a0">ceil</font><font color="4444FF">(</font><font color="#2040a0">sqrt</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">%</font><font color="#2040a0">i</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<strong>return</strong> <strong>false</strong><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+	
+	<strong>return</strong> <strong>true</strong><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>void</strong> <font color="#2040a0">printstring</font><font color="4444FF">(</font><strong>char</strong> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="4444FF">]</font>, <strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">n</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%d%s&quot;</font>, <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font>, <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#FF0000">1</font> ? <font color="#008000">&quot;&quot;</font> <font color="4444FF">:</font> <font color="#008000">&quot;<font color="#77dd77">\n</font>&quot;</font><font color="4444FF">)</font><font color="4444FF">;</font>
+		<font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>static</strong> <strong>inline</strong> <strong>void</strong> <font color="#2040a0">next</font><font color="4444FF">(</font><strong>char</strong> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="4444FF">]</font>, <strong>const</strong> <strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>int</strong> <font color="#2040a0">k</font><font color="4444FF">;</font>
+	<strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">l</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font>
+	<strong>for</strong><font color="4444FF">(</font><font color="#2040a0">k</font><font color="4444FF">=</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#FF0000">2</font><font color="4444FF">;</font> 
+		<font color="#2040a0">k</font><font color="4444FF">&gt;</font><font color="4444FF">-</font><font color="#FF0000">1</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">]</font> <font color="4444FF">&gt;</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		<font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">k</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>			
+		<font color="4444FF"><strong>}</strong></font>
+
+	<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">k</font><font color="4444FF">=</font><font color="4444FF">=</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font>
+		<strong>return</strong><font color="4444FF">;</font>
+
+	<strong>for</strong><font color="4444FF">(</font><font color="#2040a0">l</font><font color="4444FF">=</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">]</font> <font color="4444FF">&gt;</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">l</font><font color="4444FF">]</font><font color="4444FF">;</font> <font color="4444FF">-</font><font color="4444FF">-</font><font color="#2040a0">l</font><font color="4444FF">)</font>
+		<font color="4444FF">;</font>
+
+	<font color="4444FF"><strong>{</strong></font>
+		<strong>const</strong> <strong>char</strong> <font color="#2040a0">temp</font> <font color="4444FF">=</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		<font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">l</font><font color="4444FF">]</font><font color="4444FF">;</font>
+		<font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">l</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">temp</font><font color="4444FF">;</font>
+	<font color="4444FF"><strong>}</strong></font>
+
+	<font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">k</font><font color="4444FF">;</font>
+	<strong>for</strong><font color="4444FF">(</font><strong>unsigned</strong> <strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">k</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>const</strong> <strong>char</strong> <font color="#2040a0">temp</font> <font color="4444FF">=</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
+			<font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">k</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">;</font>
+			<font color="#2040a0">a</font><font color="4444FF">[</font><font color="4444FF">(</font><font color="#2040a0">n</font><font color="4444FF">-</font><font color="#FF0000">1</font><font color="4444FF">)</font><font color="4444FF">-</font><font color="#2040a0">i</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">temp</font><font color="4444FF">;</font>
+		<font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>static</strong> <strong>int</strong> <font color="#2040a0">toInt</font><font color="4444FF">(</font><strong>const</strong> <strong>char</strong> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="4444FF">]</font>, <strong>const</strong> <strong>int</strong> <font color="#2040a0">n</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>char</strong> <font color="#2040a0">temp</font><font color="4444FF">[</font><font color="#2040a0">n</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">n</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<font color="#2040a0">temp</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">a</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font><font color="4444FF">+</font><font color="#FF0000">0x30</font><font color="4444FF">;</font>
+		<font color="4444FF"><strong>}</strong></font>
+	<font color="#2040a0">temp</font><font color="4444FF">[</font><font color="#2040a0">n</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#008000">'<font color="#77dd77">\0</font>'</font><font color="4444FF">;</font>
+
+	<strong>return</strong> <font color="#2040a0">atoi</font><font color="4444FF">(</font><font color="#2040a0">temp</font><font color="4444FF">)</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+	<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">j</font><font color="4444FF">=</font><font color="#FF0000">2</font><font color="4444FF">;</font> <font color="#2040a0">j</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">9</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">j</font><font color="4444FF">)</font>
+		<font color="4444FF"><strong>{</strong></font>
+			<strong>char</strong> <font color="#2040a0">test</font><font color="4444FF">[</font><font color="#2040a0">j</font><font color="4444FF">]</font><font color="4444FF">;</font>
+			<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">j</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<font color="#2040a0">test</font><font color="4444FF">[</font><font color="#2040a0">i</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">i</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+			
+			
+			<strong>for</strong><font color="4444FF">(</font><strong>int</strong> <font color="#2040a0">i</font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#2040a0">i</font><font color="4444FF">&lt;</font><font color="#2040a0">NUM_PERMS</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">i</font><font color="4444FF">)</font>
+				<font color="4444FF"><strong>{</strong></font>
+					<strong>if</strong><font color="4444FF">(</font><font color="#2040a0">isPrime</font><font color="4444FF">(</font><font color="#2040a0">toInt</font><font color="4444FF">(</font><font color="#2040a0">test</font>, <font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">)</font>
+						<font color="4444FF"><strong>{</strong></font>
+							<font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">toInt</font><font color="4444FF">(</font><font color="#2040a0">test</font>, <font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">)</font><font color="4444FF">;</font>
+						<font color="4444FF"><strong>}</strong></font>
+					<font color="#2040a0">next</font><font color="4444FF">(</font><font color="#2040a0">test</font>, <font color="#2040a0">j</font><font color="4444FF">)</font><font color="4444FF">;</font>
+				<font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>
+<font color="#444444">//</font>
+<font color="#444444">//  vector&lt;unsigned int&gt; primes;</font>
+<font color="#444444">//  primes.push_back(2);</font>
+<font color="#444444">//  for(unsigned int i=3; i&lt;UB; i+=2)</font>
+<font color="#444444">//	  {</font>
+<font color="#444444">//		  if(isPandigital(i))</font>
+<font color="#444444">//			  {</font>
+<font color="#444444">//				  if(isPrime(i))</font>
+<font color="#444444">//					  {</font>
+<font color="#444444">//						  primes.push_back(i);</font>
+<font color="#444444">//					  }</font>
+<font color="#444444">//			  }</font>
+<font color="#444444">//	  }</font>
+<font color="#444444">//  </font>
+<font color="#444444">//  int total = 0;  </font>
+<font color="#444444">//  int count = 0;</font>
+<font color="#444444">//  for(vector&lt;unsigned int&gt;::const_iterator i = primes.begin(); </font>
+<font color="#444444">//      i != primes.end() &amp;&amp; count &lt; NUMBER_OF_LR_TRUNC_PRIMES;</font>
+<font color="#444444">//      ++i)</font>
+<font color="#444444">//	  {</font>
+<font color="#444444">//		  if(*i &gt;= 10)</font>
+<font color="#444444">//			  {</font>
+<font color="#444444">//				  bool prime = true;</font>
+<font color="#444444">//				  for(string working = toString(*i); working.length() &gt;= 1 &amp;&amp; prime; working = nextTruncLeft(working))</font>
+<font color="#444444">//					  {</font>
+<font color="#444444">//						  if(!isPrime(toInt(working), primes))</font>
+<font color="#444444">//							  {</font>
+<font color="#444444">//								  prime = false;</font>
+<font color="#444444">//							  }</font>
+<font color="#444444">//					  }</font>
+<font color="#444444">//				  </font>
+<font color="#444444">//				  for(string working = toString(*i); working.length() &gt;= 1 &amp;&amp; prime; working = nextTruncRight(working))</font>
+<font color="#444444">//					  {</font>
+<font color="#444444">//						  if(!isPrime(toInt(working), primes))</font>
+<font color="#444444">//							  {</font>
+<font color="#444444">//								  prime = false;</font>
+<font color="#444444">//							  }</font>
+<font color="#444444">//					  }</font>
+<font color="#444444">//				  </font>
+<font color="#444444">//				  if(prime)</font>
+<font color="#444444">//					  {</font>
+<font color="#444444">//						  cout &lt;&lt; *i &lt;&lt; endl;</font>
+<font color="#444444">//						  total += *i;</font>
+<font color="#444444">//						  ++count;</font>
+<font color="#444444">//					  }</font>
+<font color="#444444">//			  }</font>
+<font color="#444444">//	  }</font>
+<font color="#444444">//		  cout &lt;&lt; &quot;answer: &quot; &lt;&lt; total &lt;&lt; endl;</font>
+<font color="#444444">//		  </font>
+<font color="#444444">//		  return 0;</font>
+<font color="4444FF"><strong>}</strong></font>   
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

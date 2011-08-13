@@ -1,0 +1,92 @@
+<html>
+<head>
+  <title>prob33.c</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=33>Problem 33</a><br>Filename: prob33.c<br><pre>
+<font color="#444444">/* Problem 33 */</font>
+
+<font color="#444444">/* The fraction 49/98 is a curious fraction, as an inexperienced mathematician in attempting to simplify it may incorrectly believe that 49/98 = 4/8, which is correct, is obtained by cancelling the 9s.
+ * 
+ * We shall consider fractions like, 30/50 = 3/5, to be trivial examples.
+ * 
+ * There are exactly four non-trivial examples of this type of fraction, less than one in value, and containing two digits in the numerator and denominator.
+ * 
+ * If the product of these four fractions is given in its lowest common terms, find the value of the denominator.
+ */</font>
+ 
+<font color="0000ff"><strong>#include <font color="#008000">&lt;stdio.h&gt;</font></strong></font>
+
+<font color="#2040a0">inline</font> <strong>void</strong> <font color="#2040a0">getDigits</font><font color="4444FF">(</font><strong>const</strong> <strong>int</strong> <font color="#2040a0">number</font>, <strong>int</strong> <font color="#2040a0">digits</font><font color="4444FF">[</font><font color="4444FF">]</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <font color="#2040a0">digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">number</font>/<font color="#FF0000">10</font><font color="4444FF">;</font>
+  <font color="#2040a0">digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">=</font> <font color="#2040a0">number</font><font color="4444FF">%</font><font color="#FF0000">10</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#2040a0">inline</font> <strong>void</strong> <font color="#2040a0">dumbCancelResult</font><font color="4444FF">(</font><strong>const</strong> <strong>int</strong> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="4444FF">]</font>, <strong>const</strong> <strong>int</strong> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="4444FF">]</font>, <strong>int</strong> <font color="4444FF">*</font><font color="#2040a0">canceled_num</font>, <strong>int</strong> <font color="4444FF">*</font><font color="#2040a0">canceled_denom</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_num</font> <font color="4444FF">=</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_denom</font> <font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>else</strong> <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_num</font> <font color="4444FF">=</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_denom</font> <font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>else</strong> <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_num</font> <font color="4444FF">=</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_denom</font> <font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>else</strong> <strong>if</strong><font color="4444FF">(</font><font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">1</font><font color="4444FF">]</font> <font color="4444FF">!</font><font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_num</font> <font color="4444FF">=</font> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_denom</font> <font color="4444FF">=</font> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">0</font><font color="4444FF">]</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_num</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+      <font color="4444FF">*</font><font color="#2040a0">canceled_denom</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>int</strong> <font color="#2040a0">main</font><font color="4444FF">(</font><font color="4444FF">)</font>
+<font color="4444FF"><strong>{</strong></font>
+  <strong>int</strong> <font color="#2040a0">num</font>, <font color="#2040a0">denom</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">canceled_denom</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">canceled_num</font> <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">num_digits</font><font color="4444FF">[</font><font color="#FF0000">2</font><font color="4444FF">]</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">denom_digits</font><font color="4444FF">[</font><font color="#FF0000">2</font><font color="4444FF">]</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">num_answer</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+  <strong>int</strong> <font color="#2040a0">denom_answer</font> <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+  
+  <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">num</font> <font color="4444FF">=</font> <font color="#FF0000">10</font><font color="4444FF">;</font> <font color="#2040a0">num</font><font color="4444FF">&lt;</font><font color="4444FF">=</font><font color="#FF0000">99</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">num</font><font color="4444FF">)</font>
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong><font color="4444FF">(</font><font color="#2040a0">denom</font> <font color="4444FF">=</font> <font color="#2040a0">num</font><font color="4444FF">+</font><font color="#FF0000">1</font><font color="4444FF">;</font> <font color="#2040a0">denom</font><font color="4444FF">&lt;</font><font color="#FF0000">99</font><font color="4444FF">;</font> <font color="4444FF">+</font><font color="4444FF">+</font><font color="#2040a0">denom</font><font color="4444FF">)</font>
+	<font color="4444FF"><strong>{</strong></font>
+	  <font color="#2040a0">getDigits</font><font color="4444FF">(</font><font color="#2040a0">num</font>, <font color="#2040a0">num_digits</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <font color="#2040a0">getDigits</font><font color="4444FF">(</font><font color="#2040a0">denom</font>, <font color="#2040a0">denom_digits</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  
+	  <font color="#2040a0">dumbCancelResult</font><font color="4444FF">(</font><font color="#2040a0">num_digits</font>, <font color="#2040a0">denom_digits</font>, <font color="4444FF">&amp;</font><font color="#2040a0">canceled_num</font>, <font color="4444FF">&amp;</font><font color="#2040a0">canceled_denom</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	  <strong>if</strong><font color="4444FF">(</font><font color="4444FF">(</font><strong>float</strong><font color="4444FF">)</font><font color="#2040a0">num</font>/<font color="4444FF">(</font><strong>float</strong><font color="4444FF">)</font><font color="#2040a0">denom</font> <font color="4444FF">=</font><font color="4444FF">=</font> <font color="4444FF">(</font><strong>float</strong><font color="4444FF">)</font><font color="#2040a0">canceled_num</font>/<font color="4444FF">(</font><strong>float</strong><font color="4444FF">)</font><font color="#2040a0">canceled_denom</font><font color="4444FF">)</font>
+	    <font color="4444FF"><strong>{</strong></font>
+	      <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;%d/%d (%d/%d)<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">num</font>, <font color="#2040a0">denom</font>, <font color="#2040a0">canceled_num</font>, <font color="#2040a0">canceled_denom</font><font color="4444FF">)</font><font color="4444FF">;</font>
+	      <font color="#2040a0">num_answer</font> <font color="4444FF">*</font><font color="4444FF">=</font> <font color="#2040a0">num</font><font color="4444FF">;</font>
+	      <font color="#2040a0">denom_answer</font> <font color="4444FF">*</font><font color="4444FF">=</font> <font color="#2040a0">denom</font><font color="4444FF">;</font>
+	    <font color="4444FF"><strong>}</strong></font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+  
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;result: %d/%d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">num_answer</font>, <font color="#2040a0">denom_answer</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  <font color="#2040a0">printf</font><font color="4444FF">(</font><font color="#008000">&quot;answer: %d<font color="#77dd77">\n</font>&quot;</font>, <font color="#2040a0">denom_answer</font>/<font color="#2040a0">num_answer</font><font color="4444FF">)</font><font color="4444FF">;</font>
+  
+  <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>

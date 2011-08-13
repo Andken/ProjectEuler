@@ -1,0 +1,635 @@
+<html>
+<head>
+  <title>prob54.pl</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<a href=http://projecteuler.net/index.php?section=problems&id=54>Problem 54</a><br>Filename: prob54.pl<br><pre>
+<font color="#444444">#!/usr/bin/perl -w
+#
+#In the card game poker, a hand consists of five cards and are ranked, from lowest to highest, in the following way:
+#
+#High Card: Highest value card.
+#One Pair: Two cards of the same value.
+#Two Pairs: Two different pairs.
+#Three of a Kind: Three cards of the same value.
+#Straight: All cards are consecutive values.
+#Flush: All cards of the same suit.
+#Full House: Three of a kind and a pair.
+#Four of a Kind: Four cards of the same value.
+#Straight Flush: All cards are consecutive values of same suit.
+#Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
+#The cards are valued in the order:
+#2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace.
+#
+#If two players have the same ranked hands then the rank made up of the highest value wins; for example, a pair of eights beats a pair of fives (see example 1 below). But if two ranks tie, for example, both players have a pair of queens, then highest cards in each hand are compared (see example 4 below); if the highest cards tie then the next highest cards are compared, and so on.
+#
+#Consider the following five hands dealt to two players:
+#
+#Hand	 	Player 1	 	Player 2	 	Winner
+#1	 	5H 5C 6S 7S KD
+#Pair of Fives
+# 	2C 3S 8S 8D TD
+#Pair of Eights
+# 	Player 2
+#2	 	5D 8C 9S JS AC
+#Highest card Ace
+# 	2C 5C 7D 8S QH
+#Highest card Queen
+# 	Player 1
+#3	 	2D 9C AS AH AC
+#Three Aces
+# 	3D 6D 7D TD QD
+#Flush with Diamonds
+# 	Player 2
+#4	 	4D 6S 9H QH QC
+#Pair of Queens
+#Highest card Nine
+# 	3D 6D 7H QD QS
+#Pair of Queens
+#Highest card Seven
+# 	Player 1
+#5	 	2H 2D 4C 4D 4S
+#Full House
+#With Three Fours
+# 	3C 3D 3S 9S 9D
+#Full House
+#with Three Threes
+# 	Player 1
+#The file, poker.txt, contains one-thousand random hands dealt to two players. Each line of the file contains ten cards (separated by a single space): the first five are Player 1's cards and the last five are Player 2's cards. You can assume that all hands are valid (no invalid characters or repeated cards), each player's hand is in no specific order, and in each hand there is a clear winner.
+#
+#How many hands does Player 1 win?
+
+</font><strong>my</strong> <font color="#2040a0">$p1wins</font> = 0;
+
+<font color="a52a2a"><strong>open</strong></font><font color="4444FF"><strong>(</strong></font>FILE, <font color="#008000">&quot;poker.txt&quot;</font><font color="4444FF"><strong>)</strong></font> <strong>or</strong> <strong>die</strong> <font color="#008000">&quot;can't open poker.txt&quot;</font>;
+<strong>my</strong> <font color="#2040a0">@hands</font>=&lt;FILE&gt;;
+
+<strong>foreach</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@hands</font><font color="4444FF"><strong>)</strong></font>
+<font color="4444FF"><strong>{</strong></font>
+<font color="#444444">#    print &quot;\n\n&quot; . $_ . &quot;\n&quot;;
+
+    </font><strong>my</strong> <font color="#2040a0">$p1</font> = <font color="a52a2a"><strong>substr</strong></font> <font color="#2040a0">$_</font>, 0, 15;
+    <strong>my</strong> <font color="#2040a0">$p2</font> = <font color="a52a2a"><strong>substr</strong></font> <font color="#2040a0">$_</font>, 15, 15;
+
+    <strong>my</strong> <font color="#2040a0">$p1rank</font> = handRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1</font><font color="4444FF"><strong>)</strong></font>;
+    <strong>my</strong> <font color="#2040a0">$p2rank</font> = handRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p2</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1rank</font> &gt; <font color="#2040a0">$p2rank</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$p1wins</font> = <font color="#2040a0">$p1wins</font> + 1;
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1rank</font> == <font color="#2040a0">$p2rank</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>my</strong> <font color="#2040a0">$p1card</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1</font>, 0<font color="4444FF"><strong>)</strong></font>;
+	<strong>my</strong> <font color="#2040a0">$p2card</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p2</font>, 0<font color="4444FF"><strong>)</strong></font>;
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card</font> &gt; <font color="#2040a0">$p2card</font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <font color="#2040a0">$p1wins</font> = <font color="#2040a0">$p1wins</font> + 1;
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card</font> == <font color="#2040a0">$p2card</font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>my</strong> <font color="#2040a0">$p1card2</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1</font>, 1<font color="4444FF"><strong>)</strong></font>;
+	    <strong>my</strong> <font color="#2040a0">$p2card2</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p2</font>, 1<font color="4444FF"><strong>)</strong></font>;	    
+	    
+	    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card2</font> &gt; <font color="#2040a0">$p2card2</font><font color="4444FF"><strong>)</strong></font>
+	    <font color="4444FF"><strong>{</strong></font>
+		<font color="#2040a0">$p1wins</font> = <font color="#2040a0">$p1wins</font> + 1;
+	    <font color="4444FF"><strong>}</strong></font>
+	    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card2</font> == <font color="#2040a0">$p2card2</font><font color="4444FF"><strong>)</strong></font>
+	    <font color="4444FF"><strong>{</strong></font>
+		<strong>my</strong> <font color="#2040a0">$p1card3</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1</font>, 2<font color="4444FF"><strong>)</strong></font>;
+		<strong>my</strong> <font color="#2040a0">$p2card3</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p2</font>, 2<font color="4444FF"><strong>)</strong></font>;	    
+
+		<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card3</font> &gt; <font color="#2040a0">$p2card3</font><font color="4444FF"><strong>)</strong></font>
+		<font color="4444FF"><strong>{</strong></font>
+		    <font color="#2040a0">$p1wins</font> = <font color="#2040a0">$p1wins</font> + 1;
+		<font color="4444FF"><strong>}</strong></font>
+		<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card3</font> == <font color="#2040a0">$p2card3</font><font color="4444FF"><strong>)</strong></font>
+		<font color="4444FF"><strong>{</strong></font>
+		    <strong>my</strong> <font color="#2040a0">$p1card4</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1</font>, 3<font color="4444FF"><strong>)</strong></font>;
+		    <strong>my</strong> <font color="#2040a0">$p2card4</font> = workingCard<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p2</font>, 3<font color="4444FF"><strong>)</strong></font>;	    
+		    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$p1card4</font> &gt; <font color="#2040a0">$p2card4</font><font color="4444FF"><strong>)</strong></font>
+		    <font color="4444FF"><strong>{</strong></font>
+			<font color="#2040a0">$p1wins</font> = <font color="#2040a0">$p1wins</font> + 1;
+		    <font color="4444FF"><strong>}</strong></font>
+		<font color="4444FF"><strong>}</strong></font>   
+	    <font color="4444FF"><strong>}</strong></font>
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="a52a2a"><strong>close</strong></font><font color="4444FF"><strong>(</strong></font>FILE<font color="4444FF"><strong>)</strong></font>;
+
+<font color="a52a2a"><strong>print</strong></font> <font color="#008000">&quot;ANSWER: <font color="#2040a0">$p1wins</font><font color="#77dd77">\n</font>&quot;</font>;
+
+<strong>sub<font color="ff0000"> workingCard</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font>;
+    <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font>;
+
+    <font color="#444444"># check for straight flush
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font>isFlush<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font> &amp;&amp; isStraight<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> straightRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isFourOfAKind<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> threeOfAKindRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isFullHouse<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> threeOfAKindRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isFlush<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> flushRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isStraight<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> straightRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isThreeOfAKind<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> threeOfAKindRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isTwoPair<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> twoPairRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isPair<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> pairRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> highCardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font>, <font color="#2040a0">$order</font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> handRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <font color="#444444"># check for straight flush
+    </font><strong>if</strong><font color="4444FF"><strong>(</strong></font>isFlush<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font> &amp;&amp; isStraight<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 8;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isFourOfAKind<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 7;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isFullHouse<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 6;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isFlush<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 5;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isStraight<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 4;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isThreeOfAKind<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 3;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isTwoPair<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 2;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font>isPair<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isFlush</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">$working_suit</font> = 	<font color="a52a2a"><strong>substr</strong></font> <font color="#2040a0">$cards</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font>, 1;
+    <strong>foreach</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>my</strong> <font color="#2040a0">$suit</font> = <font color="a52a2a"><strong>substr</strong></font> <font color="#2040a0">$_</font>, 1;
+
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$suit</font> <strong>ne</strong> <font color="#2040a0">$working_suit</font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> 0;
+	<font color="4444FF"><strong>}</strong></font>
+	
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>return</strong> 1;
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isStraight</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font>+1 == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font>+1 == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font>+1 == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font>+1 == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font> == 14 &amp;&amp;
+	  <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == 2 &amp;&amp;
+	  <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == 3 &amp;&amp;
+	  <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == 4 &amp;&amp;
+	  <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> == 5<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> straightRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>; <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>die</strong> <font color="#008000">&quot;ERROR straightRank&quot;</font> <strong>unless</strong> isStraight<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+    <strong>die</strong> <font color="#008000">&quot;ERROR straightRank order &gt; 0&quot;</font> <strong>unless</strong> <font color="#2040a0">$order</font> == 0;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font> == 14 &amp;&amp;
+	  <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == 2<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> <font color="#2040a0">$sorted_number</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> <font color="#2040a0">$sorted_number</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> flushRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>; <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>die</strong> <font color="#008000">&quot;ERROR flushRank&quot;</font> <strong>unless</strong> isFlush<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+    <strong>die</strong> <font color="#008000">&quot;ERROR flushRank order &gt; 0&quot;</font> <strong>unless</strong> <font color="#2040a0">$order</font> == 0;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+    <strong>return</strong> <font color="#2040a0">$sorted_number</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font>;
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> threeOfAKindRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>; <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>die</strong> <font color="#008000">&quot;ERROR threeOfAKindRank&quot;</font> <strong>unless</strong> isThreeOfAKind<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+    <strong>die</strong> <font color="#008000">&quot;ERROR threeOfAKindRank order &gt; 0&quot;</font> <strong>unless</strong> <font color="#2040a0">$order</font> == 0;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <font color="#444444"># the middle one will be the correct one
+    </font><strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font>;
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> twoPairRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>; <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>die</strong> <font color="#008000">&quot;ERROR twoPairRank&quot;</font> <strong>unless</strong> isTwoPair<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+    <strong>die</strong> <font color="#008000">&quot;ERROR twoPairRank order &gt; 2&quot;</font> <strong>unless</strong> <font color="#2040a0">$order</font> &lt;= 2;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$order</font> == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#444444"># the second highest card is the playing pair
+	</font><strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$order</font> == 1<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#444444"># the second lowest card is the second pair
+	</font><strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font>;	
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> != <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> != <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>else</strong>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> pairRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>; <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>die</strong> <font color="#008000">&quot;ERROR pairRank&quot;</font> <strong>unless</strong> isPair<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+    <strong>die</strong> <font color="#008000">&quot;ERROR pairRank order &gt; 3&quot;</font> <strong>unless</strong> <font color="#2040a0">$order</font> &lt;= 3;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+    
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$order</font> == 0<font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+	<strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+    
+    <strong>my</strong> <font color="#2040a0">%seen</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@sorted_numbers</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$seen</font><font color="4444FF"><strong>{</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>}</strong></font>++;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@single_cards</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <strong>my</strong> <font color="#2040a0">$key</font><font color="4444FF"><strong>(</strong></font><font color="a52a2a"><strong>keys</strong></font> <font color="#2040a0">%seen</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$seen</font><font color="4444FF"><strong>{</strong></font><font color="#2040a0">$key</font><font color="4444FF"><strong>}</strong></font> == 1<font color="4444FF"><strong>)</strong></font>
+	<font color="4444FF"><strong>{</strong></font>
+	    <font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@single_cards</font>, <font color="#2040a0">$key</font><font color="4444FF"><strong>)</strong></font>;
+	<font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_single_cards</font> = <font color="a52a2a"><strong>sort</strong></font><font color="4444FF"><strong>{</strong></font><font color="#2040a0">$b</font> &lt;=&gt; <font color="#2040a0">$a</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@single_cards</font>;
+    <strong>return</strong> <font color="#2040a0">$sorted_single_cards</font><font color="4444FF"><strong>[</strong></font><font color="#2040a0">$order</font>-1<font color="4444FF"><strong>]</strong></font>;
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> highCardRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font>;
+    <strong>my</strong> <font color="#2040a0">$order</font> = <font color="a52a2a"><strong>shift</strong></font>;
+
+    <strong>die</strong> <font color="#008000">&quot;ERROR pairRank order &gt; 4&quot;</font> <strong>unless</strong> <font color="#2040a0">$order</font> &lt;= 4;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$b</font> &lt;=&gt; <font color="#2040a0">$a</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+    
+    <strong>return</strong> <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font><font color="#2040a0">$order</font><font color="4444FF"><strong>]</strong></font>;
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isFullHouse</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font> ||
+       <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font> 
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isThreeOfAKind</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font> ||
+       <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font> ||
+       <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isTwoPair</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font> ||
+       <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font> ||
+       <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isPair</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> ||
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> ||
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> ||
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>sub<font color="ff0000"> isFourOfAKind</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$hand</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@cards</font> = <font color="a52a2a"><strong>split</strong></font><font color="4444FF"><strong>(</strong></font><font color="#008000">' '</font>, <font color="#2040a0">$hand</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">@numbers</font> = <font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <strong>foreach</strong> <font color="4444FF"><strong>(</strong></font><font color="#2040a0">@cards</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="a52a2a"><strong>push</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@numbers</font>, cardRank<font color="4444FF"><strong>(</strong></font><font color="#2040a0">$_</font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>;
+    <font color="4444FF"><strong>}</strong></font>
+
+    <strong>my</strong> <font color="#2040a0">@sorted_numbers</font> = <font color="a52a2a"><strong>sort</strong></font> <font color="4444FF"><strong>{</strong></font><font color="#2040a0">$a</font> &lt;=&gt; <font color="#2040a0">$b</font><font color="4444FF"><strong>}</strong></font> <font color="#2040a0">@numbers</font>;
+
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+       <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>0<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font> || 
+       <font color="4444FF"><strong>(</strong></font><font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>2<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>3<font color="4444FF"><strong>]</strong></font> &amp;&amp;
+	<font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>1<font color="4444FF"><strong>]</strong></font> == <font color="#2040a0">$sorted_numbers</font><font color="4444FF"><strong>[</strong></font>4<font color="4444FF"><strong>]</strong></font><font color="4444FF"><strong>)</strong></font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 1;
+    <font color="4444FF"><strong>}</strong></font> 
+    <strong>else</strong>
+    <font color="4444FF"><strong>{</strong></font>
+	<strong>return</strong> 0;
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<strong>sub<font color="ff0000"> cardRank</font>
+{</strong>
+    <strong>my</strong> <font color="#2040a0">$card</font> = <font color="a52a2a"><strong>shift</strong></font><font color="4444FF"><strong>(</strong></font><font color="#2040a0">@_</font><font color="4444FF"><strong>)</strong></font>;
+
+    <strong>my</strong> <font color="#2040a0">$rank</font> = <font color="a52a2a"><strong>substr</strong></font> <font color="#2040a0">$card</font>, 0, 1;
+    
+    <strong>if</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$rank</font> <strong>eq</strong> <font color="#008000">'A'</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$rank</font> = 14;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$rank</font> <strong>eq</strong> <font color="#008000">'T'</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$rank</font> = 10;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$rank</font> <strong>eq</strong> <font color="#008000">'J'</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$rank</font> = 11;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$rank</font> <strong>eq</strong> <font color="#008000">'Q'</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$rank</font> = 12;
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>elsif</strong><font color="4444FF"><strong>(</strong></font><font color="#2040a0">$rank</font> <strong>eq</strong> <font color="#008000">'K'</font><font color="4444FF"><strong>)</strong></font>
+    <font color="4444FF"><strong>{</strong></font>
+	<font color="#2040a0">$rank</font> = 13;
+    <font color="4444FF"><strong>}</strong></font>
+  
+    <strong>return</strong> <font color="#2040a0">$rank</font>;
+<font color="4444FF"><strong>}</strong></font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9.1
+</body>
+</html>
