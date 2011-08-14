@@ -1,1 +1,3 @@
 for x in `ls *.html`; do num=$(echo "$x" | cut -d. -f 1 | cut -c5-); echo "google blogger post --blog \"Project Euler\" --title \"Problem $num\" $x"; done | sort -n -k 9
+
+
