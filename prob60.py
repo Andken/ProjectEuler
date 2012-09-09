@@ -18,9 +18,15 @@ def generatePrimesFrom3(n):
 
     return primes
 
+def concatInts(a,b):
+    temp = str(a) + str(b)
+    return int(temp)
+
 primes = generatePrimesFrom3(100)
 fastLookup = set(primes)
 
-for i in range(0, len(primes)):
-    for j in range(i+1, len(primes)):
-            print i, j
+print (concatInts(4,346) + 50000)
+
+#for i in range(0, len(primes)):
+#    for j in range(i+1, len(primes)):
+            
