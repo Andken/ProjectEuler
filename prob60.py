@@ -22,11 +22,15 @@ def concatInts(a,b):
     temp = str(a) + str(b)
     return int(temp)
 
-primes = generatePrimesFrom3(100)
+primes = generatePrimesFrom3(1000)
 fastLookup = set(primes)
+pairs = []
 
-print (concatInts(4,346) + 50000)
+for i in range(0, len(primes)):
+    for j in range(i+1, len(primes)):
+        if((concatInts(primes[i], primes[j]) in fastLookup) and
+           (concatInts(primes[j], primes[i]) in fastLookup)):
+            pairs.append((primes[i],primes[j]))
 
-#for i in range(0, len(primes)):
-#    for j in range(i+1, len(primes)):
-            
+
+print pairs
