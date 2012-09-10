@@ -4,18 +4,37 @@
 # Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime.
 # 
 
-MAX_NUM = 10000000
+MAX_NUM = 1000
+
+def isPrime(a, primes_list, primes_set):
+    if a%2 and a!=2:
+        return False 
+
+    if a in primes_set:
+        return True
+
+    for i in primes_list:
+        if a%i == 0:
+            return False
+        if i*i > a:
+            return True
+
+    # a is larger than the max sized prime in list squared
+    working_max = primes[-1]
+    while working_max*working_max < a:
+        if a%working_max == 0:
+            return False
+
+        working_max += 2
+
+    return True
+    
 
 def generatePrimesFrom3(n):
     primes = [3]
     for i in range(5,n,2):
-        for j in primes:
-            if i%j == 0:
-                break
-
-            if j*j > i:
-                primes.append(i)
-                break
+        if isPrime(i, primes, set([])):
+            primes.append(i)
 
     return primes
 
@@ -30,21 +49,19 @@ primes = generatePrimesFrom3(MAX_NUM)
 fastLookup = set(primes)
 pairs = []
 
-print "Generated primes"
-
-max_number_length = (len(str(MAX_NUM))/2)
-
-
-max_index = 0
-while(len(str(primes[max_index])) <= max_number_length):
-    max_index += 1
-
-for i in range(0, max_index):
-    for j in range(i+1, max_index):
-        if((concatInts(primes[i], primes[j]) in fastLookup) and
-           (concatInts(primes[j], primes[i]) in fastLookup)):
+for i in range(0, len(primes)):
+    for j in range(i+1, len(primes)):
+        if(isPrime(concatInts(primes[i], primes[j]), primes, fastLookup) and
+           isPrime(concatInts(primes[j], primes[i]), primes, fastLookup)): 
             pairs.append((primes[i],primes[j]))
             
 print "Made pairs"
 #print len(pairs)
-#print pairs
+print pairs
+
+#print isPrime(2,[2,3,5,7,11],set([]))
+print isPrime(73,[2,3,5,7,11],set([]))
+#print isPrime(74,[2,3,5,7,11],set([]))
+#print isPrime(75,[2,3,5,7,11],set([]))
+#print isPrime(76,[2,3,5,7,11],set([]))
+#print isPrime(77,[2,3,5,7,11],set([]))
