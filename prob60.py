@@ -7,7 +7,7 @@
 MAX_NUM = 1000
 
 def isPrime(a, primes_list, primes_set):
-    if a%2 and a!=2:
+    if a%2==0 and a!=2:
         return False 
 
     if a in primes_set:
@@ -55,13 +55,7 @@ for i in range(0, len(primes)):
            isPrime(concatInts(primes[j], primes[i]), primes, fastLookup)): 
             pairs.append((primes[i],primes[j]))
             
-print "Made pairs"
 #print len(pairs)
-print pairs
+#print pairs
 
-#print isPrime(2,[2,3,5,7,11],set([]))
-print isPrime(73,[2,3,5,7,11],set([]))
-#print isPrime(74,[2,3,5,7,11],set([]))
-#print isPrime(75,[2,3,5,7,11],set([]))
-#print isPrime(76,[2,3,5,7,11],set([]))
-#print isPrime(77,[2,3,5,7,11],set([]))
+print [(z[0],z[1],z[2]) for z in [(x[0],x[1],y[1]) for x in pairs for y in pairs if x[1] == y[0]] if (z[0], z[2]) in pairs]
