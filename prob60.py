@@ -58,4 +58,8 @@ for i in range(0, len(primes)):
 #print len(pairs)
 #print pairs
 
-print [(z[0],z[1],z[2]) for z in [(x[0],x[1],y[1]) for x in pairs for y in pairs if x[1] == y[0]] if (z[0], z[2]) in pairs]
+triplets = [(z[0],z[1],z[2]) for z in [(x[0],x[1],y[1]) for x in pairs for y in pairs if x[1] == y[0]] if (z[0], z[2]) in pairs]
+quads = [(z[0],z[1],z[2],z[3]) for z in [(x[0],x[1],x[2],y[2]) for x in triplets for y in triplets if (x[1] == y[0] and x[2] == y[1])] if (z[0], z[3]) in pairs]
+print quads
+quints = []
+print quints
