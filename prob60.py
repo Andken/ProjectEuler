@@ -4,7 +4,7 @@
 # Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime.
 # 
 
-MAX_NUM = 1000
+MAX_NUM = 20000
 
 def isPrime(a, primes_list, primes_set):
     if a%2==0 and a!=2:
@@ -21,6 +21,7 @@ def isPrime(a, primes_list, primes_set):
 
     # a is larger than the max sized prime in list squared
     working_max = primes[-1]
+    # print "checking %d (working_max %d" % (a, working_max)
     while working_max*working_max < a:
         if a%working_max == 0:
             return False
@@ -47,19 +48,21 @@ def numberLength(a):
 
 primes = generatePrimesFrom3(MAX_NUM)
 fastLookup = set(primes)
-pairs = []
+pairs = set([])
 
 for i in range(0, len(primes)):
     for j in range(i+1, len(primes)):
         if(isPrime(concatInts(primes[i], primes[j]), primes, fastLookup) and
            isPrime(concatInts(primes[j], primes[i]), primes, fastLookup)): 
-            pairs.append((primes[i],primes[j]))
+            pairs.add((primes[i],primes[j]))
             
 #print len(pairs)
 #print pairs
 
-triplets = [(z[0],z[1],z[2]) for z in [(x[0],x[1],y[1]) for x in pairs for y in pairs if x[1] == y[0]] if (z[0], z[2]) in pairs]
-quads = [(z[0],z[1],z[2],z[3]) for z in [(x[0],x[1],x[2],y[2]) for x in triplets for y in triplets if (x[1] == y[0] and x[2] == y[1])] if (z[0], z[3]) in pairs]
-print quads
-quints = []
+
+
+triplets = [(x[0],x[1],y[1]) for x in pairs for y in pairs if x[1] == y[0] and (x[0], y[1]) in pairs]
+quads = [(x[0],x[1],x[2],y[2]) for x in triplets for y in triplets if (x[1] == y[0] and x[2] == y[1] and (x[0], y[2]) in pairs)]
+quints = [(x[0],x[1],x[2],x[3],y[3]) for x in quads for y in quads if (x[1] == y[0] and x[2] == y[1] and x[3] == y[2] and (x[0], y[3]) in pairs)]
 print quints
+
