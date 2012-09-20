@@ -17,6 +17,10 @@
 # 
 #
 
+def doubleDigitize(a):
+    s = str(a)
+    return (int(s[:2]),int(s[2:]))
+
 triangle = []
 square = []
 pentagonal = []
@@ -79,3 +83,8 @@ print pentagonal
 print hexagonal
 print heptagonal
 print octagonal
+
+print doubleDigitize(1234)
+print doubleDigitize(4321)
+print doubleDigitize(4444)
+print doubleDigitize(4442)
