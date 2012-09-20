@@ -17,9 +17,22 @@
 # 
 #
 
+import sys
+
 def doubleDigitize(a):
     s = str(a)
     return (int(s[:2]),int(s[2:]))
+
+def reIntergize(a):
+    return int(str(a[0]) + str(a[1]))
+
+def polygonalOrderGenerator(polygonalLists):
+    if(len(polygonalLists) <= 1):
+        yield polygonalLists
+    else:
+        for permu in polygonalOrderGenerator(polygonalLists[1:]):
+            for i in range(len(polygonalLists)):
+                yield permu[:i] + polygonalLists[0:1] + permu[i:]
 
 triangle = []
 square = []
@@ -32,7 +45,7 @@ current_triangle = 1
 n = 1
 while(current_triangle < 10000 ):
     if current_triangle >= 1000:
-        triangle.append(current_triangle)
+        triangle.append(doubleDigitize(current_triangle))
     current_triangle = n*(n+1)/2
     n=n+1
 
@@ -40,7 +53,7 @@ n = 1
 current_square = 1
 while(current_square < 10000 ):
     if current_square >= 1000:
-        square.append(current_square)
+        square.append(doubleDigitize(current_square))
     current_square = n*n
     n=n+1
 
@@ -48,7 +61,7 @@ n = 1
 current_pentagonal = 1
 while(current_pentagonal < 10000 ):
     if current_pentagonal >= 1000:
-        pentagonal.append(current_pentagonal)
+        pentagonal.append(doubleDigitize(current_pentagonal))
     current_pentagonal = n*(3*n-1)/2
     n=n+1
 
@@ -56,7 +69,7 @@ n = 1
 current_hexagonal = 1
 while(current_hexagonal < 10000 ):
     if current_hexagonal >= 1000:
-        hexagonal.append(current_hexagonal)
+        hexagonal.append(doubleDigitize(current_hexagonal))
     current_hexagonal = n*(2*n-1)
     n=n+1
 
@@ -64,7 +77,7 @@ n = 1
 current_heptagonal = 1
 while(current_heptagonal < 10000 ):
     if current_heptagonal >= 1000:
-        heptagonal.append(current_heptagonal)
+        heptagonal.append(doubleDigitize(current_heptagonal))
     current_heptagonal = n*(5*n-3)/2
     n=n+1
 
@@ -72,19 +85,42 @@ n = 1
 current_octagonal = 1
 while(current_octagonal < 10000 ):
     if current_octagonal >= 1000:
-        octagonal.append(current_octagonal)
+        octagonal.append(doubleDigitize(current_octagonal))
     current_octagonal = n*(3*n-2)
     n=n+1
 
 
-print triangle
-print square
-print pentagonal
-print hexagonal
-print heptagonal
-print octagonal
+#print triangle
+#print square
+#print pentagonal
+#print hexagonal
+#print heptagonal
+#print octagonal
 
-print doubleDigitize(1234)
-print doubleDigitize(4321)
-print doubleDigitize(4444)
-print doubleDigitize(4442)
+num_lists=[]
+num_lists.append(triangle)
+num_lists.append(square)
+num_lists.append(pentagonal)
+num_lists.append(hexagonal)
+num_lists.append(heptagonal)
+num_lists.append(octagonal)
+
+for l in polygonalOrderGenerator(num_lists):
+#    print l
+
+
+    for a in l[0]:
+        for b in l[1]:
+            if(a[1] == b[0]):
+                for c in l[2]:
+                    if(b[1] == c[0]):
+                        for d in l[3]:
+                            if(c[1] == d[0]):
+                                for e in l[4]:
+                                    if(d[1] == e[0]):
+                                        for f in l[5]:
+                                            if(e[1] == f[0]):
+                                                if(f[1] == a[0]):
+                                                    print reIntergize(a)+reIntergize(b)+reIntergize(c)+reIntergize(d)+reIntergize(e)+reIntergize(f)
+                                                    sys.exit(0)
+
