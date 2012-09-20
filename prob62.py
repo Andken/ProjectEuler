@@ -5,34 +5,23 @@
 # Find the smallest cube for which exactly five permutations of its digits are cube.
 #
 
+import sys
 
-def numDigits(a):
-    return len(str(a))
+x = 0
+mydict = dict()
+while 1:
+    working_value = x*x*x
+    working_key = ''.join(sorted(str(working_value)))
+    if working_key in mydict:
+        new_list = mydict[working_key][1]
+        new_list.append(working_value)
+        mydict[working_key] = (mydict[working_key][0]+1,new_list)
+    else:
+        mydict[working_key] = (1, [working_value])
 
-def cube(x): return x*x*x
+    if(mydict[working_key][0] == 5):
+        print mydict[working_key][1][0]
+        sys.exit(0)
 
-def isPermute(x,y):
-    return sorted(str(x)) == sorted(str(y))
+    x+=1
 
-
-the_list = map(lambda x:x*x*x, range(10001))    
-
-
-working_digits=0
-working_list = []
-for x in the_list:
-    if(numDigits(x) > working_digits):
-        saved_y = 0
-        for y in working_list:
-            num_permutes = 0
-            for z in working_list:
-                if not y == z:
-                    if isPermute(y, z):
-                        num_permutes = num_permutes + 1
-            if num_permutes == 4:
-                print y
-
-        working_list = []
-        working_digits = numDigits(x)
-    
-    working_list.append(x)
