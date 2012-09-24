@@ -51,16 +51,16 @@ max_minimal_D = -1
 for D in range(75):
 #for D in range(1001):
     if not is_square(D):        
-        y = 1
-        x_squared = D*(y**2) + 1
-        while (not is_square(x_squared)):
-            x_squared = D*(y**2) + 1
-            y = y+1
-        x = math.sqrt(x_squared)
+        x = 2
+        y_squared = (1.0)*(x**2 - 1)/D
+        while(not (y_squared.is_integer() and is_square(y_squared))):
+            x = x+1
+            y_squared = (1.0)*(x**2 - 1)/D
         if x > max_minimal_x:
             max_minimal_x = x
             max_minimal_D = D
             print max_minimal_x, max_minimal_D
+            
 
 
 
